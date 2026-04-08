@@ -104,7 +104,7 @@ const HeroSection = () => {
                     <span>•</span>
                     <span>SEASON 1</span>
                     <span>•</span>
-                    <span>16 WEEKS</span>
+                    <span>8 WEEKS</span>
                     <span>•</span>
                     <span>$500M OPENING BUDGET</span>
                 </div>
