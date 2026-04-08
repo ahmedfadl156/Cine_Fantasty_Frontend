@@ -1,7 +1,9 @@
 "use client";
 import { useMovies } from "@/hooks/UseMovies"
-import TopMovieCard from "./TopMovieCard";
-import { AlertTriangle, Loader2 } from "lucide-react";
+import TopMovieCard from "../shared/TopMovieCard";
+import { AlertTriangle, ExternalLink, Loader2 } from "lucide-react";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const TopMovies = () => {
     const {data:movies , isLoading , isError} = useMovies();
@@ -45,6 +47,15 @@ const TopMovies = () => {
                 {movies?.map((movie: any) => (
                     <TopMovieCard key={movie._id} movie={movie} />
                 ))}
+            </div>
+
+            <div className="flex items-center justify-center mt-10">
+                <Button className="bg-primary text-on-primary hover:bg-primary/90 hover:text-on-primary transition-colors">
+                    <Link href="/market" className="flex items-center gap-2">
+                        See All In Market
+                        <ExternalLink className="w-4 h-4" />
+                    </Link>
+                </Button>
             </div>
         </section>
     )

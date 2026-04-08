@@ -1,8 +1,9 @@
 "use client";
 
-import { getTopMovies } from "@/services/getMovies";
-import { useQuery } from "@tanstack/react-query";
+import { getAllMovies, getTopMovies } from "@/services/getMovies";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
+// get top Movies
 export const useMovies = () => {
     return useQuery({
         queryKey: ["top-movies"],
@@ -12,3 +13,13 @@ export const useMovies = () => {
         select: (data) => data.data.movies
     })
 }
+
+// get all upcoming movies for market page
+export const useUpcomingMovies = (page: number) => {
+    return useQuery({
+        queryKey: ["upcomingMovies" , page],
+        queryFn: () => getAllMovies(page),
+        placeholderData: keepPreviousData,
+        staleTime: 12 * 60 * 60 * 1000 
+    })
+} 
