@@ -1,5 +1,5 @@
 "use client";
-import { useUpcomingMovies } from "@/hooks/UseMovies";
+import { useUpcomingMovies } from "@/hooks/movies/UseMovies";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MarketHeaderMovie } from "@/components/market/MarketHeaderMovie";
 import MarketMovieCard from "@/components/market/MarketMovieCard";
@@ -13,7 +13,7 @@ const MarketPage = () => {
     // هنجيب الصفحة الحالية اللى احنا فيها
     const currentPage = Number(searchParams.get("page")) || 1;
     // هنبعت الصفحة للهوك بتاعنا علشان ينفذا لريكوست
-    const { data, isLoading, isError , isPlaceholderData } = useUpcomingMovies(currentPage);
+    const { data, isLoading, isError, isPlaceholderData } = useUpcomingMovies(currentPage);
 
     const upcomingMovies = data?.data?.movies || [];
     const pagination = data?.pagination || null;
@@ -24,7 +24,7 @@ const MarketPage = () => {
     // الفانكشن المسئولة عن ان احنا نبدل بين الصفح
     const handlePageChange = (newPage: number) => {
         const params = new URLSearchParams(searchParams);
-        params.set('page' , newPage.toString());
+        params.set('page', newPage.toString());
         router.push(`${pathname}?${params.toString()}`, { scroll: false });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -53,7 +53,7 @@ const MarketPage = () => {
             {topMovie && (
                 <MarketHeaderMovie movie={topMovie} />
             )}
-            
+
             {/* section => will show all movies cards except the one on the header */}
             {restMovies.length > 0 && (
                 <section className="mt-8">
@@ -70,8 +70,8 @@ const MarketPage = () => {
                             </span>
                         )}
                     </div>
-                    
-                    <div style={{opacity: isPlaceholderData ? 0.5 : 1}} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
+
+                    <div style={{ opacity: isPlaceholderData ? 0.5 : 1 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
                         {restMovies.map((movie: any) => (
                             <MarketMovieCard key={movie._id || movie.id} movie={movie} />
                         ))}
@@ -81,12 +81,12 @@ const MarketPage = () => {
 
             {/* Pagination Controls */}
             {pagination && (
-                <MarketPagination 
-                    pagination={pagination} 
-                    onPageChange={handlePageChange} 
+                <MarketPagination
+                    pagination={pagination}
+                    onPageChange={handlePageChange}
                 />
             )}
-            
+
             {!isLoading && upcomingMovies.length === 0 && (
                 <div className="flex flex-col items-center justify-center min-h-[40vh] text-on-surface-muted bg-surface-container-low rounded-2xl border border-outline/10 mt-8">
                     <p className="text-lg font-ui p-8 text-center">No movies available at the moment.</p>

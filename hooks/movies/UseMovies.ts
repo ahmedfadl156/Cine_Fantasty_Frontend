@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllMovies, getTopMovies } from "@/services/getMovies";
+import { getAllMovies, getTopMovies } from "@/services/movies/getMovies";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 // get top Movies

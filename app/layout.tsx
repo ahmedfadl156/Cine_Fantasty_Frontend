@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Outfit, Courier_Prime } from "next/font/google";
 import "./globals.css";
 import Providers from "@/providers/QueryClientProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -41,6 +42,7 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <Toaster />
       </body>
     </html>
   );
