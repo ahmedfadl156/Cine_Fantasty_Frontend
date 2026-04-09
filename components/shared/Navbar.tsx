@@ -1,22 +1,18 @@
 "use client";
 
-import { useAuth } from "@/hooks/auth/useAuth"
+import { useAuth, useLogout } from "@/hooks/auth/useAuth"
 import Link from "next/link"
 import { useState, useRef, useEffect } from "react"
 import { Menu, X, User, LogOut, Settings, ChevronDown } from "lucide-react"
-import { useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
 import Image from "next/image"
 
 const Navbar = () => {
     const { data: user, isLoading } = useAuth();
+    const logout = useLogout();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const queryClient = useQueryClient();
-    const router = useRouter();
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -29,14 +25,9 @@ const Navbar = () => {
     }, []);
 
     const handleLogout = () => {
-        queryClient.removeQueries({ queryKey: ["authUser"] });
-        queryClient.setQueryData(["authUser"], null);
-        toast.info("Logged Out", {
-            description: "You have been fully securely signed out.",
-        });
+        logout.mutate();
         setIsDropdownOpen(false);
         setIsMobileMenuOpen(false);
-        router.push("/login");
     }
 
     return (
@@ -84,7 +75,7 @@ const Navbar = () => {
                         {/* Dropdown Menu */}
                         <div className={`absolute right-0 top-full mt-3 w-56 bg-surface-container-high border border-[#9C8E7E]/20 shadow-2xl rounded-xl py-2 transition-all duration-200 origin-top-right ${isDropdownOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
                             <div className="px-4 py-3 border-b border-[#9C8E7E]/10 mb-2">
-                                <p className="text-sm font-medium text-[#EEE4D4] truncate">{user?.name || user?.username || "Cinematographer"}</p>
+                                <p className="text-sm font-medium text-[#EEE4D4] truncate">{user?.studioName || "Cinematographer"}</p>
                                 <p className="text-xs text-[#9C8E7E] truncate mt-0.5">{user?.email || "User Account"}</p>
                             </div>
                             <div className="flex flex-col gap-1 px-2">
@@ -148,11 +139,11 @@ const Navbar = () => {
                                         <Image src={user.avatar} alt="Avatar" width={80} height={80} className="w-full h-full object-cover" />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center bg-primary text-[#EEE4D4] font-bold text-3xl">
-                                            {(user?.name || user?.username || "U").charAt(0).toUpperCase()}
+                                            {(user?.studioName || "U").charAt(0).toUpperCase()}
                                         </div>
                                     )}
                                 </div>
-                                <p className="text-lg font-medium text-[#EEE4D4] mt-2">{user?.name || user?.username || "Cinematographer"}</p>
+                                <p className="text-lg font-medium text-[#EEE4D4] mt-2">{user?.studioName || "Cinematographer"}</p>
                                 <p className="text-sm text-[#9C8E7E]">{user?.email || "User Account"}</p>
                             </div>
                             <div className="flex flex-col items-center gap-4 w-full max-w-xs mt-4">

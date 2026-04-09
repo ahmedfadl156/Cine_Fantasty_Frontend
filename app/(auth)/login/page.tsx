@@ -1,4 +1,4 @@
-import LoginForm from "@/components/LoginForm"
+import LoginForm from "@/components/Auth/LoginForm"
 import Image from "next/image"
 
 const page = () => {
@@ -11,15 +11,15 @@ const page = () => {
                 <div className="absolute inset-0 flex flex-col justify-between p-12 z-10 w-full h-full">
                     <div className="flex flex-col gap-1">
                         <span className="data-mono text-[10px] tracking-[0.3em] text-[#9C8E7E] uppercase">Archive Fragment No. 72-04</span>
-                        <h1 className="editorial-title text-5xl leading-tight text-[#EEE4D4]">The Golden Era of <br/>Independent Cinema.</h1>
+                        <h1 className="editorial-title text-5xl leading-tight text-[#EEE4D4]">The Golden Era of <br />Independent Cinema.</h1>
                     </div>
                     <div className="space-y-6">
                         {/* Film Strip Card Component */}
                         <div className="bg-surface-container-high p-6 w-80 space-y-4 relative z-20 shadow-2xl">
                             <div className="aspect-2/3 bg-surface-container-lowest overflow-hidden relative">
-                                <Image 
-                                    className="object-cover opacity-80 grayscale" 
-                                    alt="vintage monochrome film production still of a director looking through a lens in a darkened 1970s studio set" 
+                                <Image
+                                    className="object-cover opacity-80 grayscale"
+                                    alt="vintage monochrome film production still of a director looking through a lens in a darkened 1970s studio set"
                                     src="/login-poster.png"
                                     fill
                                     sizes="(max-width: 768px) 100vw, 320px"
