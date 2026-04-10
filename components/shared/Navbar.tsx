@@ -61,13 +61,16 @@ const Navbar = () => {
                             className="flex items-center gap-3 hover:bg-[#1a1714] p-1.5 pr-3 rounded-full transition-all border border-transparent hover:border-[#9C8E7E]/30"
                         >
                             <div className="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-[#9C8E7E]/50 flex shrink-0">
-                                {user?.avatar ? (
+                                {/* {user?.avatar ? (
                                     <Image src={user.avatar} alt="Avatar" width={40} height={40} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-primary text-[#EEE4D4] font-bold text-lg">
                                         {(user?.studioName || "U").charAt(0).toUpperCase()}
                                     </div>
-                                )}
+                                )} */}
+                                    <div className="w-full h-full flex items-center justify-center bg-primary text-[#EEE4D4] font-bold text-lg">
+                                        {(user?.studioName || "U").charAt(0).toUpperCase()}
+                                    </div>
                             </div>
                             <ChevronDown className={`w-4 h-4 text-[#9C8E7E] transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
                         </button>

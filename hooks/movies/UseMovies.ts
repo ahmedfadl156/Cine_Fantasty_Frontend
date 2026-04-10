@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllMovies, getTopMovies } from "@/services/movies/getMovies";
+import { getAllMovies, getMovieDetails, getTopMovies } from "@/services/movies/getMovies";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 // get top Movies
@@ -23,3 +23,15 @@ export const useUpcomingMovies = (page: number) => {
         staleTime: 12 * 60 * 60 * 1000 
     })
 } 
+
+// get movie details
+export const useMovieDetails = (id: string) => {
+    return useQuery({
+        queryKey: ["movieDetails" , id],
+        queryFn: () => getMovieDetails(id),
+        staleTime: 12 * 60 * 60 * 1000,
+        retry: 1,
+        enabled: !!id,
+        select: (data) => data.data
+    })
+}

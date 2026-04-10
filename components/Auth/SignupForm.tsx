@@ -32,7 +32,7 @@ const SignupForm = () => {
             </div>
             <div className="flex flex-col items-start justify-start w-full max-w-md gap-2 mt-10">
                 <h1 className="italic text-[#EEE4D4] text-4xl tracking-wide">Welcome To Cine Fantasty</h1>
-                <p className="text-md text-[#9C8E7E]">Enter your Information to get in the game</p>
+                <p className="text-md text-[#9C8E7E]">The Studio of your Imagination</p>
             </div>
             {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-start justify-start w-full max-w-md gap-4 mt-12">

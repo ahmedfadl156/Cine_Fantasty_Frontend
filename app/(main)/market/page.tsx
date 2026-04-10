@@ -13,7 +13,7 @@ const MarketPage = () => {
     // هنجيب الصفحة الحالية اللى احنا فيها
     const currentPage = Number(searchParams.get("page")) || 1;
     // هنبعت الصفحة للهوك بتاعنا علشان ينفذا لريكوست
-    const { data, isLoading, isError, isPlaceholderData } = useUpcomingMovies(currentPage);
+    const { data, isPending, isError, isPlaceholderData } = useUpcomingMovies(currentPage);
 
     const upcomingMovies = data?.data?.movies || [];
     const pagination = data?.pagination || null;
@@ -29,7 +29,7 @@ const MarketPage = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <main className="flex flex-col px-4 py-8 items-center justify-center min-h-[70vh]">
                 <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
@@ -87,7 +87,7 @@ const MarketPage = () => {
                 />
             )}
 
-            {!isLoading && upcomingMovies.length === 0 && (
+            {!isPending && upcomingMovies.length === 0 && (
                 <div className="flex flex-col items-center justify-center min-h-[40vh] text-on-surface-muted bg-surface-container-low rounded-2xl border border-outline/10 mt-8">
                     <p className="text-lg font-ui p-8 text-center">No movies available at the moment.</p>
                 </div>

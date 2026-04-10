@@ -21,7 +21,7 @@ const MarketMovieCard = ({ movie }: MarketMovieCardProps) => {
         : `https://image.tmdb.org/t/p/w500${movie.posterPath}`;
 
     return (
-        <Link href={`/movie/${movie.id}`} className="group relative flex flex-col bg-surface-container-low border border-transparent hover:border-outline/30 overflow-hidden shadow-lg transition-all duration-500 rounded-xl cursor-default">
+        <Link prefetch={false} href={`/market/movie/${movie.id}`} className="group relative flex flex-col bg-surface-container-low border border-transparent hover:border-outline/30 overflow-hidden shadow-lg transition-all duration-500 rounded-xl cursor-default">
             {/* Poster */}
             <div className="relative aspect-2/3 w-full bg-surface-container-high overflow-hidden">
                 <div className="absolute inset-0 bg-linear-to-t from-background/95 via-background/40 to-transparent z-10 opacity-60 group-hover:opacity-90 transition-opacity duration-500" />

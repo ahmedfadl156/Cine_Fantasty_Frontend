@@ -47,7 +47,7 @@ const TopMovieCard = ({ movie }: TopMovieCardProps) => {
                 
                 {/* Action Button */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 z-20 group-hover:opacity-100 cinematic-transition translate-y-4 group-hover:translate-y-0">
-                    <Link href={`/movie/${movie.id}`} transitionTypes={['slide-in']} className="flex items-center gap-2 bg-primary px-6 py-3 text-on-primary font-ui uppercase tracking-widest text-xs font-semibold cursor-pointer hover:bg-white hover:text-primary cinematic-transition shadow-2xl">
+                    <Link href={`/market/movie/${movie.id}`} transitionTypes={['slide-in']} className="flex items-center gap-2 bg-primary px-6 py-3 text-on-primary font-ui uppercase tracking-widest text-xs font-semibold cursor-pointer hover:bg-white hover:text-primary cinematic-transition shadow-2xl">
                         <Eye className="h-4 w-4" />
                         Details
                     </Link>

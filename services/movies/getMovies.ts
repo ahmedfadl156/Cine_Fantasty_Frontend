@@ -22,3 +22,15 @@ export const getAllMovies = async (page = 1) => {
     const upcomingMovies = await response.json();
     return upcomingMovies;
 }
+
+export const getMovieDetails = async (id: string) => {
+    const response = await fetch(`${API_URL}/movie/get-movie-details/${id}`);
+
+    if(!response.ok){
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed To Get Movie Details");
+    }
+
+    const movieDetails = await response.json();
+    return movieDetails;
+}
