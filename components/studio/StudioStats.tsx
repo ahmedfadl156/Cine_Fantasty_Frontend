@@ -104,7 +104,7 @@ const formatCompact = (value: number) =>
         maximumFractionDigits: 1,
     }).format(value);
 
-export const buildStudioStats = (overview: MyStudioOverview): StudioStat[] => [
+export const buildStudioStats = (overview: MyStudioOverview, remainingCash?: number): StudioStat[] => [
     {
         label: "Total Assets",
         value: String(overview.totalFilmsOwned),
@@ -124,17 +124,17 @@ export const buildStudioStats = (overview: MyStudioOverview): StudioStat[] => [
         trend: "neutral",
     },
     {
+        label: "Remaining Cash",
+        value: remainingCash !== undefined ? formatCompact(remainingCash) : "—",
+        subValue: "Remaining Cash In Your Studio",
+        icon: DollarSign,
+        trend: "neutral",
+    },
+    {
         label: "Net P&L",
         value: "—",
         subValue: "Awaiting box office",
         icon: Activity,
-        trend: "neutral",
-    },
-    {
-        label: "League Rank",
-        value: "—",
-        subValue: "Season in progress",
-        icon: Trophy,
         trend: "neutral",
     },
 ];
@@ -143,6 +143,6 @@ export const buildStudioStats = (overview: MyStudioOverview): StudioStat[] => [
 export const studioStatsPlaceholder: StudioStat[] = [
     { label: "Total Assets",   value: "—", icon: Film,       trend: "neutral" },
     { label: "Total Invested", value: "—", icon: DollarSign, accent: true, trend: "neutral" },
+    { label: "Remaining Cash",    value: "—", icon: DollarSign,     trend: "neutral" },
     { label: "Net P&L",        value: "—", icon: Activity,   trend: "neutral" },
-    { label: "League Rank",    value: "—", icon: Trophy,     trend: "neutral" },
 ];

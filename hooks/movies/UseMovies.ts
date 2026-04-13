@@ -46,6 +46,8 @@ export const useBuyMovie = () => {
         mutationFn: (movieId: string) => buyMovie(movieId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["upcomingMovies"] });
+            queryClient.invalidateQueries({ queryKey: ["myStudio"] });
+            queryClient.invalidateQueries({queryKey: ["authUser"]})
             toast.success("Movie Bought Successfully" , {
                 description: "You can now watch this movie in your studio"
             })

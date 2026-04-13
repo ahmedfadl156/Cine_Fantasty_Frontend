@@ -22,6 +22,8 @@ export const useLogin = () => {
         mutationFn: login,
         onSuccess: (user) => {
             queryClient.setQueryData(['authUser'] , user);
+            queryClient.invalidateQueries({queryKey: ["authUser"]})
+            queryClient.invalidateQueries({queryKey: ["myStudio"]})
             toast.success("Login Success" , {
                 description: "Welcome back to Cine Fantasty"
             })
@@ -43,6 +45,8 @@ export const useSignup = () => {
         mutationFn: signup,
         onSuccess: (user) => {
             queryClient.setQueryData(['authUser'] , user);
+            queryClient.invalidateQueries({queryKey: ["authUser"]})
+            queryClient.invalidateQueries({queryKey: ["myStudio"]})
             toast.success("Account created successfully" , {
                 description: "Welcome to Cine Fantasty Enjoy Building your studio"
             })

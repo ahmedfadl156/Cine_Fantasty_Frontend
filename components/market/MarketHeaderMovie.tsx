@@ -1,7 +1,12 @@
+"use client";
 import Image from "next/image";
+import Link from "next/link";
 import { Plus, Calendar } from "lucide-react";
+import { useState } from "react";
+import { BuyMovieModal } from "@/components/movie-details/BuyMovieModal";
 
 export const MarketHeaderMovie = ({ movie }: { movie: any }) => {
+    const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
     const releaseYear = new Date(movie.releaseDate).getFullYear();
     const formattedDate = new Date(movie.releaseDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
     const formattedPrice = new Intl.NumberFormat('en-US', {
@@ -15,7 +20,8 @@ export const MarketHeaderMovie = ({ movie }: { movie: any }) => {
         : `https://image.tmdb.org/t/p/original${movie.posterPath}`;
 
     return (
-        <section className="relative w-full overflow-hidden rounded-2xl bg-surface-container-low border border-outline/20 shadow-2xl cinematic-transition group mb-12">
+        <>
+        <Link prefetch={false} href={`/market/movie/${movie._id || movie.id}`} className="block relative w-full overflow-hidden rounded-2xl bg-surface-container-low border border-outline/20 shadow-2xl cinematic-transition group mb-12">
             <div className="flex flex-col md:flex-row min-h-[500px]">
                 {/* Left side: Poster */}
                 <div className="relative w-full md:w-1/2 min-h-[500px] md:min-h-full overflow-hidden">
@@ -59,13 +65,28 @@ export const MarketHeaderMovie = ({ movie }: { movie: any }) => {
                     </div>
 
                     <div className="mt-auto md:mt-8 pt-6 flex flex-col sm:flex-row gap-4">
-                        <button className="flex items-center justify-center gap-3 bg-primary text-on-primary px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-primary transition-all duration-300 shadow-[0_0_20px_rgba(var(--color-primary),0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]">
+                        <button onClick={(e) => {
+                            e.preventDefault();
+                            setIsBuyModalOpen(true);
+                        }} className="flex items-center justify-center gap-3 bg-primary text-on-primary px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-primary transition-all duration-300 shadow-[0_0_20px_rgba(var(--color-primary),0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]">
                             <Plus className="w-5 h-5" />
                             Buy Movie
                         </button>
                     </div>
                 </div>
             </div>
-        </section>
+        </Link>
+        <BuyMovieModal 
+            isOpen={isBuyModalOpen}
+            onClose={() => setIsBuyModalOpen(false)}
+            movie={{
+                systemId: movie._id || movie.id,
+                title: movie.title,
+                posterPath: movie.posterPath,
+                purchasePriceInDollars: movie.basePriceInDollars || (movie.basePrice / 100),
+                gameStatus: movie.gameStatus || "IN_PRODUCTION",
+            }}
+        />
+        </>
     );
 };

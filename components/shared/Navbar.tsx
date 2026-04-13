@@ -7,7 +7,8 @@ import { Menu, X, User, LogOut, Settings, ChevronDown } from "lucide-react"
 import Image from "next/image"
 
 const Navbar = () => {
-    const { data: user, isLoading } = useAuth();
+    const { data , isLoading } = useAuth();
+    const user = data?.user
     const logout = useLogout();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);

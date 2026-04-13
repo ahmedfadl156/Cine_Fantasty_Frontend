@@ -16,7 +16,7 @@ export const login = async (credentials: {email: string , password: string}) => 
     }
 
     const result = await response.json();
-    return result.data.user;
+    return result;
 }
 
 export const signup = async (credentials: {studioName: string , email: string , password: string}) => {
@@ -35,7 +35,7 @@ export const signup = async (credentials: {studioName: string , email: string , 
     }
 
     const result = await response.json();
-    return result.data.user
+    return result
 }
 
 export const logout = async () => {

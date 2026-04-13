@@ -1,12 +1,16 @@
+"use client";
 import { Eye, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { BuyMovieModal } from "@/components/movie-details/BuyMovieModal";
 
 export interface MarketMovieCardProps {
     movie: any;
 }
 
 const MarketMovieCard = ({ movie }: MarketMovieCardProps) => {
+    const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
     const releaseYear = new Date(movie.releaseDate).getFullYear();
     const formattedDate = new Date(movie.releaseDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     
@@ -21,7 +25,8 @@ const MarketMovieCard = ({ movie }: MarketMovieCardProps) => {
         : `https://image.tmdb.org/t/p/w500${movie.posterPath}`;
 
     return (
-        <Link prefetch={false} href={`/market/movie/${movie.id}`} className="group relative flex flex-col bg-surface-container-low border border-transparent hover:border-outline/30 overflow-hidden shadow-lg transition-all duration-500 rounded-xl cursor-default">
+        <>
+        <Link prefetch={false} href={`/market/movie/${movie._id || movie.id}`} className="group relative flex flex-col bg-surface-container-low border border-transparent hover:border-outline/30 overflow-hidden shadow-lg transition-all duration-500 rounded-xl cursor-default">
             {/* Poster */}
             <div className="relative aspect-2/3 w-full bg-surface-container-high overflow-hidden">
                 <div className="absolute inset-0 bg-linear-to-t from-background/95 via-background/40 to-transparent z-10 opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
@@ -69,13 +74,29 @@ const MarketMovieCard = ({ movie }: MarketMovieCardProps) => {
                         </span>
                     </div>
                     
-                    <button onClick={(e) => e.preventDefault()} className="flex items-center gap-1.5 bg-surface-container border border-outline/20 px-3 py-1.5 rounded-sm text-xs font-ui uppercase font-semibold text-on-surface hover:bg-primary hover:text-on-primary hover:border-primary transition-colors focus:outline-none cursor-pointer">
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setIsBuyModalOpen(true);
+                    }} className="flex items-center gap-1.5 bg-surface-container border border-outline/20 px-3 py-1.5 rounded-sm text-xs font-ui uppercase font-semibold text-on-surface hover:bg-primary hover:text-on-primary hover:border-primary transition-colors focus:outline-none cursor-pointer">
                         <Plus className="w-3 h-3" />
                         Buy
                     </button>
                 </div>
             </div>
         </Link>
+        <BuyMovieModal 
+            isOpen={isBuyModalOpen}
+            onClose={() => setIsBuyModalOpen(false)}
+            movie={{
+                systemId: movie._id || movie.id,
+                title: movie.title,
+                posterPath: movie.posterPath,
+                purchasePriceInDollars: movie.basePriceInDollars || (movie.basePrice / 100),
+                gameStatus: movie.gameStatus || "IN_PRODUCTION",
+            }}
+        />
+        </>
     );
 };
 

@@ -13,13 +13,16 @@ import { Clapperboard, Settings, Trophy, AlertCircle } from "lucide-react";
 import Link from "next/link";
 
 const MyStudioPage = () => {
-    const { data: user, isLoading: userLoading } = useAuth();
+    const { data , isLoading: userLoading } = useAuth();
+    const user = data?.user
+    const remainingCash = data?.activeSeason?.currentStudio?.cashBalanceInDollars;
     const {
         data: studioData,
         isLoading: studioLoading,
         isError: studioError,
         error,
     } = useMyStudio();
+
 
     const leagueEntries: never[] = [];
 
@@ -94,7 +97,7 @@ const MyStudioPage = () => {
                 <StudioStats
                     stats={
                         studioData
-                            ? buildStudioStats(studioData.overview)
+                            ? buildStudioStats(studioData.overview, remainingCash)
                             : studioStatsPlaceholder
                     }
                     isLoading={studioLoading}

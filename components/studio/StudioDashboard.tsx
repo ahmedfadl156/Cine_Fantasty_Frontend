@@ -186,8 +186,8 @@ export const StudioDashboard = ({ dashboard, isLoading }: StudioDashboardProps) 
 
     return (
         <div className="flex flex-col">
-            {/* ── Tab Bar ── */}
-            <div className="flex border-b border-on-secondary-container/15">
+            {/*  Tab Bar  */}
+            <div className="flex overflow-x-auto overflow-y-hidden border-b border-on-secondary-container/15 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {TABS.map((tab) => {
                     const Icon = tab.icon;
                     const isActive = activeTab === tab.id;
@@ -196,7 +196,7 @@ export const StudioDashboard = ({ dashboard, isLoading }: StudioDashboardProps) 
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`relative flex items-center gap-2 px-5 py-3.5 text-[10px] font-mono uppercase tracking-widest cinematic-transition group focus:outline-none ${
+                            className={`relative flex items-center justify-center flex-shrink-0 whitespace-nowrap gap-2 px-5 py-3.5 text-[10px] font-mono uppercase tracking-widest cinematic-transition group focus:outline-none ${
                                 isActive
                                     ? "text-on-surface"
                                     : "text-on-secondary-container hover:text-on-surface"
