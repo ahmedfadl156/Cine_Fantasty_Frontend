@@ -142,3 +142,35 @@ export const joinLeague = async (inviteCode: string) => {
 
     return response.json();
 }
+
+export interface LeagueActivityItem {
+    id: string;
+    type: string;
+    timestamp: string;
+    details: {
+        movieId: string;
+        movieTitle: string;
+        moviePoster: string;
+        purchasePrice: number;
+        studioName: string;
+        purchasePriceInDollars: number;
+    };
+}
+
+export interface LeagueActivityData {
+    feed: LeagueActivityItem[];
+}
+
+export const getLeagueActivityFeed = async (leagueId: string): Promise<LeagueActivityData> => {
+    const response = await fetch(`${API_URL}/leagues/get-league-activity-feed/${leagueId}`, {
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to get league activity feed");
+    }
+
+    const { data } = await response.json();
+    return data;
+}

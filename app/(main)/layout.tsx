@@ -1,10 +1,14 @@
 import Navbar from "@/components/shared/Navbar"
+import Footer from "@/components/shared/Footer"
 
 const layout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <main>
+        <main className="flex flex-col min-h-[100dvh]">
             <Navbar />
-            {children}
+            <div className="flex-1">
+                {children}
+            </div>
+            <Footer />
         </main>
     )
 }

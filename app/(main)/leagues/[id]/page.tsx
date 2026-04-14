@@ -76,7 +76,7 @@ const LeagueDetailPage = () => {
                     {/* Right Sidebar */}
                     <div className="xl:col-span-5 flex flex-col gap-8">
                         <LeagueAboutCard league={league} />
-                        <LeagueActivityFeed />
+                        <LeagueActivityFeed leagueId={leagueId} />
                         <LeagueRosterCard league={league} leaderboardData={leaderboardData} />
                     </div>
                 </div>

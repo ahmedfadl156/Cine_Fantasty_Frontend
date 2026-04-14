@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const posters = ["/poster-1.png", "/poster-2.png", "/poster-3.png"];
 
@@ -97,7 +98,9 @@ const HeroSection = () => {
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 items-center">
                     <Button className="rounded-lg py-6 px-10 text-md cursor-pointer">Start your studio</Button>
-                    <Button variant="outline" className="rounded-lg py-6 px-10 text-md cursor-pointer">See how it works</Button>
+                    <Button variant="outline" className="rounded-lg py-6 px-10 text-md cursor-pointer">
+                        <Link href="/how-it-works">See how it works</Link>
+                    </Button>
                 </div>
                 <div className="text-[7px] md:text-[12px] text-on-secondary-container tracking-widest flex flex-wrap gap-x-6 gap-y-2 opacity-60 my-10">
                     <span>FREE</span>

@@ -1,4 +1,4 @@
-import { createLeague, getPublicLeagues, getMyLeagues, joinLeague, joinPublicLeague, getLeagueDetails, getLeagueLeaderboard } from "@/services/leagues/leagues"
+import { createLeague, getPublicLeagues, getMyLeagues, joinLeague, joinPublicLeague, getLeagueDetails, getLeagueLeaderboard, getLeagueActivityFeed } from "@/services/leagues/leagues"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
@@ -17,6 +17,15 @@ export const useGetLeagueLeaderboard = (leagueId: string) => {
         queryFn: () => getLeagueLeaderboard(leagueId),
         enabled: !!leagueId,
         staleTime: 2 * 60 * 1000
+    });
+}
+
+export const useGetLeagueActivityFeed = (leagueId: string) => {
+    return useQuery({
+        queryKey: ["leagueActivityFeed", leagueId],
+        queryFn: () => getLeagueActivityFeed(leagueId),
+        enabled: !!leagueId,
+        staleTime: 1 * 60 * 1000
     });
 }
 
