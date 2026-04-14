@@ -35,7 +35,7 @@ const LeaguesPage = () => {
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-col md:flex-row items-center gap-3">
                         <Link
                             href="/leagues/my-leagues"
                             className="flex-shrink-0 flex items-center gap-2 border border-on-secondary-container/20 text-on-secondary-container px-5 py-3.5 text-xs font-mono uppercase tracking-widest hover:border-primary/30 hover:text-primary cinematic-transition"

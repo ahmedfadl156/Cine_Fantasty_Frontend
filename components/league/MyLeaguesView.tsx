@@ -304,20 +304,20 @@ export const MyLeaguesView = ({ onCreateOpen }: { onCreateOpen: () => void }) =>
     return (
         <div className="space-y-12">
             {/* Tab bar */}
-            <div className="flex items-center gap-px bg-on-secondary-container/10">
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-px bg-on-secondary-container/10 overflow-hidden">
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`flex items-center gap-2 px-5 py-3 font-mono text-[10px] uppercase tracking-widest cinematic-transition ${
+                        className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-5 py-3 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest cinematic-transition min-w-[30%] ${
                             activeTab === tab.id
                                 ? "bg-primary text-on-surface"
                                 : "bg-surface-container-low text-on-secondary-container hover:text-on-surface hover:bg-surface-container-high"
                         }`}
                     >
-                        {tab.label}
+                        <span className="truncate">{tab.label}</span>
                         {tab.count !== undefined && (
-                            <span className={`text-[9px] px-1.5 py-0.5 ${
+                            <span className={`flex-shrink-0 text-[9px] px-1.5 py-0.5 ${
                                 activeTab === tab.id
                                     ? "bg-white/20"
                                     : "bg-surface-container-high"
