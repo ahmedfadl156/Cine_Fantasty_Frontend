@@ -1,11 +1,12 @@
 "use client";
+import React, { Suspense } from "react";
 import { useUpcomingMovies } from "@/hooks/movies/UseMovies";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MarketHeaderMovie } from "@/components/market/MarketHeaderMovie";
 import MarketMovieCard from "@/components/market/MarketMovieCard";
 import { MarketPagination } from "@/components/market/MarketPagination";
 
-const MarketPage = () => {
+const MarketContent = () => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
@@ -95,5 +96,17 @@ const MarketPage = () => {
         </main>
     )
 }
+
+const MarketPage = () => {
+    return (
+        <Suspense fallback={
+            <main className="flex flex-col px-4 py-8 items-center justify-center min-h-[70vh]">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </main>
+        }>
+            <MarketContent />
+        </Suspense>
+    );
+};
 
 export default MarketPage;
