@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { X, Hash, Lock } from "lucide-react";
+import { useJoinPublicLeague } from "@/hooks/leagues/useLeagues";
 
 interface JoinLeagueModalProps {
     isOpen: boolean;
@@ -19,8 +20,13 @@ export const JoinLeagueModal = ({
     requiresCode = false,
 }: JoinLeagueModalProps) => {
     const [inviteCode, setInviteCode] = useState("");
-
+    const {mutate: joinPublicLeague , isPending , isError} = useJoinPublicLeague();
+    console.log(leagueId)
     if (!isOpen) return null;
+
+    const handleJoinPublicLeague = (leagueId: string) => {
+        joinPublicLeague(leagueId)
+    }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -106,10 +112,11 @@ export const JoinLeagueModal = ({
                             Cancel
                         </button>
                         <button
-                            disabled={requiresCode && inviteCode.length < 6}
+                            onClick={() => handleJoinPublicLeague(leagueId!)}
+                            disabled={isPending || (requiresCode && inviteCode.length < 6)}
                             className="bg-primary text-on-surface px-6 py-3 text-xs font-ui font-medium uppercase tracking-widest hover:bg-primary/80 cinematic-transition shadow-[0_0_20px_rgba(200,53,42,0.25)] disabled:opacity-40 disabled:cursor-not-allowed"
                         >
-                            Confirm & Join
+                            {isPending ? "Joining..." : "Confirm & Join"}
                         </button>
                     </div>
                 </div>

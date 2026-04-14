@@ -68,6 +68,7 @@ export const useLogout = () => {
         mutationFn: logout,
         onSuccess: () => {
             queryClient.removeQueries({ queryKey: ['authUser'] });
+            queryClient.removeQueries({queryKey: ["myStudio"]})
             toast.success("Logout Success" , {
                 description: "Wish to see you again"
             })
