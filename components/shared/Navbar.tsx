@@ -103,7 +103,7 @@ const Navbar = () => {
                         <Link href="/login" className="text-sm tracking-widest text-[#9C8E7E] uppercase hover:text-primary transition-colors mr-2">
                             Login
                         </Link>
-                        <Link href="/register" className="text-sm tracking-widest text-background font-medium uppercase px-6 py-2.5 rounded-sm bg-primary hover:bg-primary/90 shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all">
+                        <Link href="/signup" className="text-sm tracking-widest text-background font-medium uppercase px-6 py-2.5 rounded-sm bg-primary hover:bg-primary/90 shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all">
                             Join Now
                         </Link>
                     </>
@@ -164,7 +164,7 @@ const Navbar = () => {
                             <Link onClick={() => setIsMobileMenuOpen(false)} href="/login" className="w-full text-center py-4 tracking-widest text-[#9C8E7E] uppercase border border-[#9C8E7E]/30 rounded-sm hover:text-primary hover:border-primary transition-all">
                                 Login
                             </Link>
-                            <Link onClick={() => setIsMobileMenuOpen(false)} href="/register" className="w-full text-center py-4 tracking-widest text-background font-medium uppercase rounded-sm bg-primary hover:bg-primary/90 shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all">
+                            <Link onClick={() => setIsMobileMenuOpen(false)} href="/signup" className="w-full text-center py-4 tracking-widest text-background font-medium uppercase rounded-sm bg-primary hover:bg-primary/90 shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all">
                                 Join Now
                             </Link>
                         </div>
