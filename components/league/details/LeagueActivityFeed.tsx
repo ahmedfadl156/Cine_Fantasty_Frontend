@@ -51,7 +51,7 @@ export const LeagueActivityFeed = ({ leagueId }: { leagueId?: string }) => {
                     <p className="font-ui text-sm text-red-400">Error retrieving activity feed.</p>
                 </div>
             ) : activityData?.feed && activityData.feed.length > 0 ? (
-                <div className="bg-surface-container-low border border-outline/10 shadow-lg rounded-2xl overflow-hidden backdrop-blur-sm">
+                <div className="bg-surface-container-low border border-outline/10 shadow-lg rounded-2xl overflow-y-auto h-[500px] backdrop-blur-sm cinematic-scrollbar pr-1">
                     <div className="divide-y divide-outline/5 relative">
                         {/* Dramatic lightning accent line */}
                         <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary/50 via-primary/10 to-transparent z-10" />

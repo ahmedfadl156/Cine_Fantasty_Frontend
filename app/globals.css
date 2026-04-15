@@ -208,4 +208,27 @@
     outline: none;
     border-bottom-color: var(--color-primary);
   }
+
+  .cinematic-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-on-surface-muted) transparent;
+  }
+  
+  .cinematic-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .cinematic-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .cinematic-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-surface-bright);
+    border-radius: var(--radius, 0px);
+  }
+  
+  .cinematic-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-on-surface-muted);
+  }
 }

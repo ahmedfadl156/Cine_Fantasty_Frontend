@@ -25,7 +25,11 @@ export const JoinLeagueModal = ({
     if (!isOpen) return null;
 
     const handleJoinPublicLeague = (leagueId: string) => {
-        joinPublicLeague(leagueId)
+        joinPublicLeague(leagueId, {
+            onSuccess: () => {
+                onClose();
+            }
+        });
     }
 
     return (
