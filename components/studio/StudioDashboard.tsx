@@ -91,20 +91,30 @@ const EmptyTab = ({ label }: { label: string }) => (
 
 const FilmRow = ({ film, index }: { film: MyStudioFilm; index: number }) => {
     const { movieDetails, purchasePriceInDollars, daysUntilRelease } = film;
-    const posterUrl = getPosterUrl(movieDetails.posterPath);
+    const posterUrl = getPosterUrl(movieDetails?.posterPath);
+
+    const formattedDate = movieDetails?.releaseDate 
+        ? formatDate(movieDetails.releaseDate) 
+        : "Released";
 
     const daysLabel =
-        daysUntilRelease === 0
+        daysUntilRelease === undefined || daysUntilRelease === null
+            ? "In Theaters"
+            : daysUntilRelease < 0
+            ? "Released"
+            : daysUntilRelease === 0
             ? "Releasing today"
             : daysUntilRelease === 1
             ? "1 day left"
             : `${daysUntilRelease} days left`;
 
     const countdownColor =
-        daysUntilRelease <= 7
-            ? "text-[#A85A3A]"
+        daysUntilRelease === undefined || daysUntilRelease === null || daysUntilRelease <= 0
+            ? "text-[#4E9268]" 
+            : daysUntilRelease <= 7
+            ? "text-[#A85A3A]" 
             : daysUntilRelease <= 30
-            ? "text-[#D4AF37]"
+            ? "text-[#D4AF37]" 
             : "text-on-secondary-container";
 
     return (
@@ -118,7 +128,7 @@ const FilmRow = ({ film, index }: { film: MyStudioFilm; index: number }) => {
             <div className="relative w-12 h-[72px] flex-shrink-0 overflow-hidden">
                 <Image
                     src={posterUrl}
-                    alt={movieDetails.title}
+                    alt={movieDetails?.title || "Movie poster"}
                     fill
                     className="object-cover group-hover:scale-105 cinematic-transition"
                     sizes="48px"
@@ -128,13 +138,13 @@ const FilmRow = ({ film, index }: { film: MyStudioFilm; index: number }) => {
             {/* Info */}
             <div className="flex-1 min-w-0 flex flex-col justify-center gap-1.5">
                 <p className="font-ui font-medium text-on-surface text-sm leading-tight line-clamp-1 group-hover:text-primary cinematic-transition">
-                    {movieDetails.title}
+                    {movieDetails?.title || "Unknown Title"}
                 </p>
 
                 <div className="flex items-center gap-1.5">
                     <Calendar className="w-3 h-3 text-on-secondary-container/50 flex-shrink-0" />
                     <span className="font-mono text-[10px] text-on-secondary-container uppercase tracking-wider">
-                        {formatDate(movieDetails.releaseDate)}
+                        {formattedDate}
                     </span>
                 </div>
 

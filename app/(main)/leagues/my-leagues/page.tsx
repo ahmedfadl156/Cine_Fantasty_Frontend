@@ -5,9 +5,11 @@ import { Trophy, Globe, Plus, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { MyLeaguesView } from "@/components/league/MyLeaguesView";
 import { CreateLeagueModal } from "@/components/league/CreateLeagueModal";
+import { JoinLeagueModal } from "@/components/league/JoinLeagueModal";
 
 const MyLeaguesPage = () => {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const [isJoinOpen, setIsJoinOpen] = useState(false);
 
     return (
         <div className="bg-background min-h-screen">
@@ -61,12 +63,12 @@ const MyLeaguesPage = () => {
                             >
                                 <Plus className="w-4 h-4" /> Create League
                             </button>
-                            <Link
-                                href="/leagues"
+                            <button
+                                onClick={() => setIsJoinOpen(true)}
                                 className="flex items-center gap-2 border border-on-secondary-container/20 text-on-secondary-container px-6 py-3 text-xs font-mono uppercase tracking-widest hover:border-primary/30 hover:text-primary cinematic-transition"
                             >
-                                <Globe className="w-3.5 h-3.5" /> Browse Public
-                            </Link>
+                                <Plus className="w-3.5 h-3.5" /> Join League
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -99,6 +101,13 @@ const MyLeaguesPage = () => {
             <CreateLeagueModal
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}
+            />
+
+            {/* Join Private League Modal */}
+            <JoinLeagueModal
+                isOpen={isJoinOpen}
+                onClose={() => setIsJoinOpen(false)}
+                requiresCode={true}
             />
         </div>
     );

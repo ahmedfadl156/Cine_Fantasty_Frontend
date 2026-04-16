@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { X, Hash, Lock } from "lucide-react";
-import { useJoinPublicLeague } from "@/hooks/leagues/useLeagues";
+import { useJoinPublicLeague, useJoinLeague } from "@/hooks/leagues/useLeagues";
 
 interface JoinLeagueModalProps {
     isOpen: boolean;
@@ -20,16 +20,19 @@ export const JoinLeagueModal = ({
     requiresCode = false,
 }: JoinLeagueModalProps) => {
     const [inviteCode, setInviteCode] = useState("");
-    const {mutate: joinPublicLeague , isPending , isError} = useJoinPublicLeague();
-    console.log(leagueId)
+    const {mutate: joinPublicLeague, isPending: isPublicPending } = useJoinPublicLeague();
+    const {mutate: joinPrivateLeague, isPending: isPrivatePending } = useJoinLeague();
+    
+    const isPending = isPublicPending || isPrivatePending;
+
     if (!isOpen) return null;
 
-    const handleJoinPublicLeague = (leagueId: string) => {
-        joinPublicLeague(leagueId, {
-            onSuccess: () => {
-                onClose();
-            }
-        });
+    const handleJoin = () => {
+        if (requiresCode && !leagueId) {
+            joinPrivateLeague({ inviteCode }, { onSuccess: () => onClose() });
+        } else if (leagueId) {
+            joinPublicLeague(leagueId, { onSuccess: () => onClose() });
+        }
     }
 
     return (
@@ -88,8 +91,8 @@ export const JoinLeagueModal = ({
                                 type="text"
                                 value={inviteCode}
                                 onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-                                placeholder="Enter 6-digit code"
-                                maxLength={6}
+                                placeholder="Enter League Invite Code"
+                                maxLength={9}
                                 className="underline-input w-full py-2.5 text-xl tracking-[0.5em] text-center placeholder:tracking-widest placeholder:text-on-secondary-container/30 font-mono"
                             />
                             <p className="font-mono text-[10px] text-on-secondary-container/50 text-center">
@@ -116,7 +119,7 @@ export const JoinLeagueModal = ({
                             Cancel
                         </button>
                         <button
-                            onClick={() => handleJoinPublicLeague(leagueId!)}
+                            onClick={handleJoin}
                             disabled={isPending || (requiresCode && inviteCode.length < 6)}
                             className="bg-primary text-on-surface px-6 py-3 text-xs font-ui font-medium uppercase tracking-widest hover:bg-primary/80 cinematic-transition shadow-[0_0_20px_rgba(200,53,42,0.25)] disabled:opacity-40 disabled:cursor-not-allowed"
                         >
