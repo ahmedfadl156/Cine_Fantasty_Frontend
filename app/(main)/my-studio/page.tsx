@@ -8,12 +8,15 @@ import {
     studioStatsPlaceholder,
 } from "@/components/studio/StudioStats";
 import { StudioDashboard } from "@/components/studio/StudioDashboard";
-import { LeagueStandings } from "@/components/studio/LeagueStandings";
+import { MyLeaguesWidget } from "@/components/studio/MyLeaguesWidget";
 import { Clapperboard, Settings, Trophy, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import { useGetMyLeagues } from "@/hooks/leagues/useLeagues";
 
 const MyStudioPage = () => {
     const { data , isLoading: userLoading } = useAuth();
+    const {data: myLeagues , isLoading } = useGetMyLeagues();
+    console.log(myLeagues)
     const user = data?.user
     const remainingCash = data?.activeSeason?.currentStudio?.cashBalanceInDollars;
     const {
@@ -83,10 +86,10 @@ const MyStudioPage = () => {
                                 <Clapperboard className="w-3.5 h-3.5" />
                                 Browse Market
                             </Link>
-                            <button className="flex items-center gap-2 border border-on-secondary-container/25 text-on-secondary-container px-5 py-3 text-xs font-ui font-medium uppercase tracking-widest hover:border-on-surface/50 hover:text-on-surface cinematic-transition">
+                            {/* <button className="flex items-center gap-2 border border-on-secondary-container/25 text-on-secondary-container px-5 py-3 text-xs font-ui font-medium uppercase tracking-widest hover:border-on-surface/50 hover:text-on-surface cinematic-transition">
                                 <Settings className="w-3.5 h-3.5" />
                                 Settings
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                 </div>
@@ -146,22 +149,21 @@ const MyStudioPage = () => {
 
                     {/*  Right sidebar  */}
                     <div className="xl:col-span-5 flex flex-col gap-8">
-                        {/* League Standings */}
+                        {/* My Leagues */}
                         <div>
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="flex-1 h-px bg-on-secondary-container/20" />
                                 <span className="text-[10px] font-mono tracking-widest uppercase text-on-secondary-container flex items-center gap-1.5">
                                     <Trophy className="w-3 h-3" />
-                                    League
+                                    My Leagues
                                 </span>
                                 <div className="flex-1 h-px bg-on-secondary-container/20" />
                             </div>
 
                             <div className="bg-surface-container-low">
-                                <LeagueStandings
-                                    entries={leagueEntries}
-                                    isLoading={false}
-                                    leagueName="Season 01"
+                                <MyLeaguesWidget
+                                    leagues={myLeagues?.data?.leagues}
+                                    isLoading={isLoading}
                                 />
                             </div>
                         </div>

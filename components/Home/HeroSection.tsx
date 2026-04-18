@@ -97,7 +97,9 @@ const HeroSection = () => {
                     marketplace in the world's first archival movie league.
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 items-center">
-                    <Button className="rounded-lg py-6 px-10 text-md cursor-pointer">Start your studio</Button>
+                    <Button className="rounded-lg py-6 px-10 text-md cursor-pointer">
+                        <Link href="/market">Start your studio</Link>
+                    </Button>
                     <Button variant="outline" className="rounded-lg py-6 px-10 text-md cursor-pointer">
                         <Link href="/how-it-works">See how it works</Link>
                     </Button>
@@ -107,9 +109,9 @@ const HeroSection = () => {
                     <span>•</span>
                     <span>SEASON 1</span>
                     <span>•</span>
-                    <span>8 WEEKS</span>
+                    <span>12 WEEKS</span>
                     <span>•</span>
-                    <span>$500M OPENING BUDGET</span>
+                    <span>$400M OPENING BUDGET</span>
                 </div>
             </section>
         </main>

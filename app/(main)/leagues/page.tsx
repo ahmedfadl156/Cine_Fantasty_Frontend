@@ -38,13 +38,13 @@ const LeaguesPage = () => {
                     <div className="flex flex-col md:flex-row items-center gap-3">
                         <Link
                             href="/leagues/my-leagues"
-                            className="flex-shrink-0 flex items-center gap-2 border border-on-secondary-container/20 text-on-secondary-container px-5 py-3.5 text-xs font-mono uppercase tracking-widest hover:border-primary/30 hover:text-primary cinematic-transition"
+                            className="shrink-0 flex items-center gap-2 border font-bold border-on-secondary-container/60 text-on-secondary-container px-8 py-4 text-xs font-mono uppercase tracking-widest hover:border-primary/30 hover:text-primary cinematic-transition"
                         >
                             <User className="w-3.5 h-3.5" /> My Leagues
                         </Link>
                         <button
                             onClick={() => setIsCreateOpen(true)}
-                            className="flex-shrink-0 flex items-center gap-2 bg-primary text-on-surface px-6 py-3.5 text-xs font-ui font-medium uppercase tracking-widest hover:bg-primary/80 cinematic-transition shadow-[0_0_20px_rgba(200,53,42,0.25)]"
+                            className="shrink-0 flex items-center gap-2 bg-primary text-on-surface px-8 py-4 text-xs font-ui font-medium uppercase tracking-widest hover:bg-primary/80 cinematic-transition shadow-[0_0_20px_rgba(200,53,42,0.25)]"
                         >
                             <Plus className="w-4 h-4" />
                             Create League
