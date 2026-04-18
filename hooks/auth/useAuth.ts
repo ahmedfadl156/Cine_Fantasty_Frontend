@@ -1,6 +1,7 @@
 "use client";
 import { login, logout, signup } from "@/services/auth/auth"
 import { getMe } from "@/services/auth/getMe"
+import { updateMe, updateMyPassword } from "@/services/auth/userService"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -80,3 +81,42 @@ export const useLogout = () => {
         }
     })
 }
+
+export const useUpdateMe = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: updateMe,
+        onSuccess: (data) => {
+            queryClient.setQueryData(["authUser"], (old: any) => ({
+                ...old,
+                user: { ...old?.user, ...data?.user },
+            }));
+            queryClient.invalidateQueries({ queryKey: ["authUser"] });
+            toast.success("Profile Updated", {
+                description: "Your profile has been updated successfully.",
+            });
+        },
+        onError: (error) => {
+            toast.error("Update Failed", {
+                description: error.message,
+            });
+        },
+    });
+};
+
+export const useUpdateMyPassword = () => {
+    return useMutation({
+        mutationFn: updateMyPassword,
+        onSuccess: () => {
+            toast.success("Password Changed", {
+                description: "Your password has been changed successfully.",
+            });
+        },
+        onError: (error) => {
+            toast.error("Password Update Failed", {
+                description: error.message,
+            });
+        },
+    });
+};

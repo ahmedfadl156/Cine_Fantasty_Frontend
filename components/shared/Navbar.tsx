@@ -87,10 +87,6 @@ const Navbar = () => {
                                     <User className="w-4 h-4" />
                                     Account Profile
                                 </Link>
-                                <Link onClick={() => setIsDropdownOpen(false)} href="/settings" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface hover:bg-surface-container-lowest hover:text-primary transition-colors">
-                                    <Settings className="w-4 h-4" />
-                                    Preferences
-                                </Link>
                                 <div className="h-px bg-[#9C8E7E]/10 my-1 mx-2"></div>
                                 <button onClick={handleLogout} className="flex items-center justify-between w-full text-left gap-3 px-3 py-2 rounded-lg text-sm text-red-500 hover:bg-red-500/10 transition-colors">
                                     <span className="flex items-center gap-3"><LogOut className="w-4 h-4" /> Sign Out</span>
@@ -139,13 +135,13 @@ const Navbar = () => {
                         <div className="flex flex-col items-center gap-6 w-full px-8">
                             <div className="flex flex-col items-center gap-2">
                                 <div className="w-20 h-20 rounded-full bg-surface-container-high border border-primary overflow-hidden shadow-[0_0_15px_rgba(212,175,55,0.2)]">
-                                    {user?.avatar ? (
+                                    {/* {user?.avatar ? (
                                         <Image src={user.avatar} alt="Avatar" width={80} height={80} className="w-full h-full object-cover" />
-                                    ) : (
+                                    ) : ( */}
                                         <div className="w-full h-full flex items-center justify-center bg-primary text-[#EEE4D4] font-bold text-3xl">
                                             {(user?.studioName || "U").charAt(0).toUpperCase()}
                                         </div>
-                                    )}
+                                    {/* )} */}
                                 </div>
                                 <p className="text-lg font-medium text-[#EEE4D4] mt-2">{user?.studioName || "Cinematographer"}</p>
                                 <p className="text-sm text-[#9C8E7E]">{user?.email || "User Account"}</p>

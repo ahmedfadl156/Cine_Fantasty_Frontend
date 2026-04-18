@@ -1,8 +1,64 @@
+"use client";
+
 import Link from "next/link";
 import { Clapperboard, DiscIcon as Discord, ArrowUpRight, X } from "lucide-react";
+import { useState } from "react";
+import InfoModal from "./InfoModal";
+
+const MODAL_CONTENT = {
+  gameRules: {
+    title: "Game Rules",
+    content: `1. Draft or buy distribution rights for upcoming movies before their release.
+2. Movie values are tied exactly to their real-world global box office gross.
+3. The player with the highest Total Net Worth (Cash + Box Office Gross of owned movies) at the end of the season wins.
+4. Any unsportsmanlike behavior or attempting to exploit the platform will result in immediate disqualification.`
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    content: `Q: How is the box office data updated?
+A: Our servers sync with international box office APIs daily to reflect the most accurate earnings.
+
+Q: What happens if a movie gets delayed?
+A: If a movie is bumped out of the current season window, its value is locked at its current gross, or you can trade it away.
+
+Q: Can I join multiple leagues?
+A: Yes! You can create and join multiple public and private leagues.`
+  },
+  terms: {
+    title: "Terms of Service",
+    content: `By using CineFantasty, you agree to our platform rules. 
+
+This is a simulation game—no real money is gambled or earned. Accounts found using automated scrubbing/trading scripts may be suspended. 
+
+We reserve the right to correct any box office data discrepancies without prior notice to ensure fair play.`
+  },
+  privacy: {
+    title: "Privacy Policy",
+    content: `Your privacy matters to us. 
+
+We store basic profile details (email, username, encrypted password) essential to game functionality. We use strictly necessary cookies to keep you logged in. 
+
+Your data is never sold to third-party ad networks or data brokers.`
+  },
+  cookies: {
+    title: "Cookie Policy",
+    content: `CineFantasty uses essential cookies to manage your session and keep you logged into the application securely. 
+
+We do not use cross-site tracking or advertising cookies. By continuing to use our platform, you consent to the use of these absolutely necessary session cookies.`
+  }
+};
+
+type ModalContentType = keyof typeof MODAL_CONTENT | null;
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  
+  const [activeModal, setActiveModal] = useState<ModalContentType>(null);
+
+  const openModal = (e: React.MouseEvent, type: ModalContentType) => {
+    e.preventDefault();
+    setActiveModal(type);
+  };
 
   return (
     <footer className="bg-[#050505] border-t border-white/5 pt-16 pb-8 text-sm relative overflow-hidden">
@@ -72,19 +128,19 @@ export default function Footer() {
             <h3 className="font-semibold text-white mb-6 tracking-wide">Resources</h3>
             <ul className="space-y-4">
               <li>
-                <Link href="/how-it-works" className="text-zinc-400 hover:text-primary transition-colors">
-                  How it Works
+                <Link href={"/how-it-works"}  className="text-zinc-400 hover:text-primary transition-colors">
+                  How to Play
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-zinc-400 hover:text-primary transition-colors">
+                <button onClick={(e) => openModal(e, 'gameRules')} className="text-zinc-400 hover:text-primary transition-colors">
                   Game Rules
-                </Link>
+                </button>
               </li>
               <li>
-                <Link href="#" className="text-zinc-400 hover:text-primary transition-colors flex items-center gap-1">
+                <button onClick={(e) => openModal(e, 'faq')} className="text-zinc-400 hover:text-primary transition-colors flex items-center gap-1">
                   FAQ
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -94,19 +150,19 @@ export default function Footer() {
             <h3 className="font-semibold text-white mb-6 tracking-wide">Legal</h3>
             <ul className="space-y-4">
               <li>
-                <Link href="#" className="text-zinc-400 hover:text-primary transition-colors">
+                <button onClick={(e) => openModal(e, 'terms')} className="text-zinc-400 hover:text-primary transition-colors">
                   Terms of Service
-                </Link>
+                </button>
               </li>
               <li>
-                <Link href="#" className="text-zinc-400 hover:text-primary transition-colors">
+                <button onClick={(e) => openModal(e, 'privacy')} className="text-zinc-400 hover:text-primary transition-colors">
                   Privacy Policy
-                </Link>
+                </button>
               </li>
               <li>
-                <Link href="#" className="text-zinc-400 hover:text-primary transition-colors">
+                <button onClick={(e) => openModal(e, 'cookies')} className="text-zinc-400 hover:text-primary transition-colors">
                   Cookie Policy
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -123,6 +179,13 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      <InfoModal 
+        isOpen={activeModal !== null} 
+        onClose={() => setActiveModal(null)} 
+        title={activeModal ? MODAL_CONTENT[activeModal].title : ""}
+        content={activeModal ? MODAL_CONTENT[activeModal].content : ""}
+      />
     </footer>
   );
 }

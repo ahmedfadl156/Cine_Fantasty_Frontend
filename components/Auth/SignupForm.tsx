@@ -2,10 +2,13 @@
 import { useSignup } from "@/hooks/auth/useAuth"
 import { signupSchema, SignupSchema } from "@/lib/authSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form"
 
 const SignupForm = () => {
+    const [visible , setVisible] = useState(false);
     const {mutate: signup , isPending , isError , error: serverError} = useSignup();
     const {register , handleSubmit , formState: {errors}} = useForm<SignupSchema>({
         resolver: zodResolver(signupSchema),
@@ -60,14 +63,17 @@ const SignupForm = () => {
                     className="w-full text-[#EEE4D4] placeholder-[#2D2924] focus:outline-none border-b border-b-[#9C8E7E] py-3 px-2" />
                     {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
                 </div>
-                <div className="flex flex-col items-start justify-start w-full gap-2 mt-10">
+                <div className="relative flex flex-col items-start justify-start w-full gap-2 mt-10">
                     <label htmlFor="password" className="text-md text-[#EEE4D4]">Password</label>
                     <input 
-                    type="password" 
+                    type={visible ? "text" : "password"} 
                     id="password" 
                     {...register("password")} 
                     placeholder="********"
                     className="w-full text-[#EEE4D4] placeholder-[#2D2924] focus:outline-none border-b border-b-[#9C8E7E] py-3 px-2" />
+                    <button type="button" onClick={() => setVisible(!visible)} className="absolute right-4 top-12 text-[#5c554d] hover:text-[#9c8e7e] transition-colors">
+                        {visible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
                     {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
                 </div>
                 <button type="submit" disabled={isPending} className="w-full px-4 py-[14px] mt-10 cursor-pointer text-lg font-medium rounded-md bg-primary text-[#EEE4D4] hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-primary">
