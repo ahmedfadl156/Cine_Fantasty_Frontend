@@ -22,3 +22,21 @@ export const formatCurrencyString = (amountInDollars: number) => {
     maximumFractionDigits: 0,
   }).format(amountInDollars);
 };
+
+
+export const formatCompactDollars = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        notation: "compact",
+        maximumFractionDigits: 1,
+    }).format(amount);
+};
+
+export const formatDollars = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+    }).format(amount);
+};

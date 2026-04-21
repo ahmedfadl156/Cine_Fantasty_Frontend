@@ -49,6 +49,9 @@ const Navbar = () => {
                 <Link href="/leagues" className="text-sm font-medium tracking-wide text-on-surface hover:text-primary transition-colors">
                     Leagues
                 </Link>
+                <Link href="/leaderboard" className="text-sm font-medium tracking-wide text-on-surface hover:text-primary transition-colors">
+                    Leaderboard
+                </Link>
             </div>
 
             {/* Desktop Actions */}
@@ -125,6 +128,9 @@ const Navbar = () => {
                     </Link>
                     <Link onClick={() => setIsMobileMenuOpen(false)} href="/leagues" className="text-lg font-medium text-on-surface hover:text-primary transition-colors">
                         Leagues
+                    </Link>
+                    <Link onClick={() => setIsMobileMenuOpen(false)} href="/leaderboard" className="text-lg font-medium text-on-surface hover:text-primary transition-colors">
+                        Leaderboard
                     </Link>
                     
                     <div className="w-24 h-px bg-[#9C8E7E]/20 my-2"></div>
