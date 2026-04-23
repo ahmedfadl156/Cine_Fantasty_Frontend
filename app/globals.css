@@ -232,3 +232,9 @@
     background: var(--color-on-surface-muted);
   }
 }
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

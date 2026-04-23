@@ -13,6 +13,7 @@ import {
     DollarSign,
 } from "lucide-react";
 import type { MyStudioDashboard, MyStudioFilm } from "@/services/movies/getMovies";
+import { ShareGamePopup } from "./ShareGamePopup";
 
 
 const formatCurrency = (value: number) =>
@@ -251,6 +252,8 @@ export const StudioDashboard = ({ dashboard, isLoading }: StudioDashboardProps) 
                     ))
                 )}
             </div>
+            
+            <ShareGamePopup />
         </div>
     );
 };
