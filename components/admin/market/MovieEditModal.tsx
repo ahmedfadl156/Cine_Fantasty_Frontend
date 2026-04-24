@@ -29,8 +29,8 @@ export const MovieEditModal = ({ isOpen, onClose, movie }: MovieEditModalProps) 
             setFormData({
                 status: movie.status || "",
                 releaseDate: movie.releaseDate ? new Date(movie.releaseDate).toISOString().split('T')[0] : "",
-                basePriceInDollars: movie.basePrice ? movie.basePrice / 100 : 0,
-                boxOfficePriceInDollars: movie.boxOfficeRevenue ? movie.boxOfficeRevenue / 100 : 0
+                basePriceInDollars: movie.basePrice ? movie.basePrice : 0,
+                boxOfficePriceInDollars: movie.boxOfficeRevenue ? movie.boxOfficeRevenue : 0
             });
         }
     }, [movie, isOpen]);
@@ -117,7 +117,6 @@ export const MovieEditModal = ({ isOpen, onClose, movie }: MovieEditModalProps) 
                                 required
                                 type="number"
                                 min="0"
-                                step="100000"
                                 value={formData.basePriceInDollars}
                                 onChange={(e) => setFormData({ ...formData, basePriceInDollars: Number(e.target.value) })}
                                 className="bg-black/50 border-white/10 text-white focus:border-primary font-mono"
@@ -129,7 +128,6 @@ export const MovieEditModal = ({ isOpen, onClose, movie }: MovieEditModalProps) 
                                 required
                                 type="number"
                                 min="0"
-                                step="100000"
                                 value={formData.boxOfficePriceInDollars}
                                 onChange={(e) => setFormData({ ...formData, boxOfficePriceInDollars: Number(e.target.value) })}
                                 className="bg-black/50 border-white/10 text-emerald-400 focus:border-primary font-mono shadow-[inset_0_0_10px_rgba(16,185,129,0.1)]"

@@ -40,3 +40,7 @@ export const updateMovieAdmin = async (movieId: string, updates: { status?: stri
     const updatedMovie = await response.json();
     return updatedMovie;
 }
+
+
+
+// export const applyStreamingRevenue = async (manualRating?: number) => {}

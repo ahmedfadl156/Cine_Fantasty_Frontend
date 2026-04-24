@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
 import { Edit2, ChevronLeft, ChevronRight, TrendingUp, Clock, Archive } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface MovieListTableProps {
     movies: any[];
@@ -17,7 +17,6 @@ interface MovieListTableProps {
 }
 
 export const MovieListTable = ({ movies, pagination, onPageChange, onEdit }: MovieListTableProps) => {
-
     const getStatusIcon = (status: string) => {
         switch (status) {
             case "IN_THEATERS": return <TrendingUp className="w-3.5 h-3.5 mr-1" />;
@@ -43,6 +42,7 @@ export const MovieListTable = ({ movies, pagination, onPageChange, onEdit }: Mov
                     <table className="w-full text-sm text-left whitespace-nowrap">
                         <thead className="bg-white/5 text-gray-400 font-ui text-xs uppercase tracking-wider border-b border-white/10">
                             <tr>
+                                <th scope="col" className="px-6 py-4 font-medium">Poster</th>
                                 <th scope="col" className="px-6 py-4 font-medium">Movie Title</th>
                                 <th scope="col" className="px-6 py-4 font-medium">Status</th>
                                 <th scope="col" className="px-6 py-4 font-medium">Release Date</th>
@@ -52,9 +52,23 @@ export const MovieListTable = ({ movies, pagination, onPageChange, onEdit }: Mov
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5">
-                            {movies.map((movie) => (
+                            {movies.map((movie) => {
+                                const imageUrl = movie.posterPath.startsWith('http') 
+                                ? movie.posterPath 
+                                : `https://image.tmdb.org/t/p/w500${movie.posterPath}`;
+                                return (
                                 <tr key={movie._id} className="hover:bg-white/5 transition-colors group">
                                     <td className="px-6 py-4">
+                                        <div className="relative w-20 h-20">
+                                        <Image
+                                            src={imageUrl}
+                                            alt={movie.title}
+                                            fill
+                                            className="object-cover rounded-lg"
+                                        />
+                                        </div>
+                                    </td>
+                                    <td className=  "px-6 py-4">
                                         <div className="flex flex-col">
                                             <span className="font-display font-medium text-white group-hover:text-primary transition-colors">
                                                 {movie.title}
@@ -93,7 +107,7 @@ export const MovieListTable = ({ movies, pagination, onPageChange, onEdit }: Mov
                                         </Button>
                                     </td>
                                 </tr>
-                            ))}
+                            )})}
                             {movies.length === 0 && (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
