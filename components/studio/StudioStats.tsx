@@ -96,13 +96,15 @@ export const StudioStats = ({ stats, isLoading }: StudioStatsProps) => {
 };
 
 
-const formatCompact = (value: number) =>
-    new Intl.NumberFormat("en-US", {
+const formatCompact = (value: number | null | undefined) => {
+    const safe = typeof value === "number" && isFinite(value) ? value : 0;
+    return new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
         notation: "compact",
         maximumFractionDigits: 1,
-    }).format(value);
+    }).format(safe);
+};
 
 export const buildStudioStats = (overview: MyStudioOverview, remainingCash?: number): StudioStat[] => [
     {
@@ -132,10 +134,10 @@ export const buildStudioStats = (overview: MyStudioOverview, remainingCash?: num
     },
     {
         label: "Net P&L",
-        value: formatCompact(overview.netProfitInDollars),
+        value: formatCompact(overview.netProfitInDollars ?? 0),
         subValue: "Net profit in dollars",
         icon: Activity,
-        trend: overview.netProfitInDollars > 0 ? "up" : overview.netProfitInDollars < 0 ? "down" : "neutral",
+        trend: (overview.netProfitInDollars ?? 0) > 0 ? "up" : (overview.netProfitInDollars ?? 0) < 0 ? "down" : "neutral",
     },
 ];
 

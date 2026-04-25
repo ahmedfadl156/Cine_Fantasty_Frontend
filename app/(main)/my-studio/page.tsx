@@ -17,7 +17,6 @@ import { useGetMyLeagues } from "@/hooks/leagues/useLeagues";
 const MyStudioPage = () => {
     const { data , isLoading: userLoading } = useAuth();
     const {data: myLeagues , isLoading } = useGetMyLeagues();
-    console.log(myLeagues)
     const user = data?.user
     const remainingCash = data?.activeSeason?.currentStudio?.cashBalanceInDollars;
     const {
