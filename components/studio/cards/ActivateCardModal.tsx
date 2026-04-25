@@ -54,7 +54,7 @@ export const ActivateCardModal = ({ isOpen, onClose, card, films }: ActivateCard
         }
 
         activateMutation.mutate(
-            { cardId: card._id, movieId: selectedMovieId },
+            { cardCode: card.code, purchasedmovieId: selectedMovieId },
             {
                 onSuccess: () => {
                     toast.success(`${card.name} activated on ${selectedFilm?.movieDetails?.title ?? "movie"}!`);

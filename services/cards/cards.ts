@@ -21,8 +21,8 @@ export interface CardsResponse {
 }
 
 export interface ActivateCardPayload {
-    cardId: string;
-    movieId: string;
+    cardCode: string;       
+    purchasedmovieId: string; 
 }
 
 export const getCards = async (): Promise<CardsResponse> => {
@@ -43,7 +43,10 @@ export const activateCard = async (payload: ActivateCardPayload): Promise<unknow
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+            cardCode: payload.cardCode,
+            purchasedmovieId: payload.purchasedmovieId,
+        }),
     });
 
     if (!response.ok) {
