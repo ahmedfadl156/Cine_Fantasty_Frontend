@@ -1,12 +1,13 @@
-import { Trophy, Globe, Lock, Crown, ChevronLeft, Settings } from "lucide-react";
+import { Trophy, Globe, Lock, Crown, ChevronLeft, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
 import { LeagueDetails } from "@/services/leagues/leagues";
 
 interface LeagueHeroBannerProps {
     league: LeagueDetails;
+    onOpenSettings?: () => void;
 }
 
-export const LeagueHeroBanner = ({ league }: LeagueHeroBannerProps) => {
+export const LeagueHeroBanner = ({ league, onOpenSettings }: LeagueHeroBannerProps) => {
     return (
         <section className="relative overflow-hidden bg-surface-container-lowest border-b border-on-secondary-container/10">
             {/* Grid overlay */}
@@ -74,10 +75,17 @@ export const LeagueHeroBanner = ({ league }: LeagueHeroBannerProps) => {
                             <Trophy className="w-3.5 h-3.5" />
                             View My Stats
                         </button>
-                        {league.role === "OWNER" && (
-                            <button className="flex items-center gap-2 border border-on-secondary-container/25 text-on-secondary-container px-5 py-3 text-xs font-ui font-medium uppercase tracking-widest hover:border-on-surface/50 hover:text-on-surface cinematic-transition">
-                                <Settings className="w-3.5 h-3.5" />
-                                Settings
+                        {(league.role === "OWNER" || league.role === "MEMBER") && (
+                            <button
+                                onClick={onOpenSettings}
+                                className="flex items-center gap-2 border border-on-secondary-container/25 text-on-secondary-container px-5 py-3 text-xs font-ui font-medium uppercase tracking-widest hover:border-on-surface/50 hover:text-on-surface cinematic-transition"
+                            >
+                                {league.role === "OWNER" ? (
+                                    <Settings className="w-3.5 h-3.5" />
+                                ) : (
+                                    <LogOut className="w-3.5 h-3.5" />
+                                )}
+                                {league.role === "OWNER" ? "Settings" : "Leave League"}
                             </button>
                         )}
                     </div>

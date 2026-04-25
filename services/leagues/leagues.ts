@@ -174,3 +174,50 @@ export const getLeagueActivityFeed = async (leagueId: string): Promise<LeagueAct
     const { data } = await response.json();
     return data;
 }
+
+export const updateLeagueSettings = async (leagueId: string, settings: { isPublic?: boolean, name?: string }) => {
+    const response = await fetch(`${API_URL}/leagues/${leagueId}/settings`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings),
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update league settings");
+    }
+
+    const updateLeague = await response.json();
+    return updateLeague;
+}
+
+export const leaveLeague = async (leagueId: string) => {
+    const response = await fetch(`${API_URL}/leagues/${leagueId}/leave`, {
+        method: "DELETE",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to leave league");
+    }
+
+    const updatedLeague = await response.json();
+    return updatedLeague;
+}
+
+export const kickPlayerFromLeague = async (leagueId: string , playerId: string) => {
+    const response = await fetch(`${API_URL}/leagues/${leagueId}/kick/${playerId}` , {
+        method: "DELETE",
+        credentials: "include"
+    });
+
+    if(!response.ok){
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to kick the player please try again later");
+    }
+
+    const updatedLeague = await response.json();
+    return updatedLeague;
+}

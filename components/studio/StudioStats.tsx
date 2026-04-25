@@ -132,10 +132,10 @@ export const buildStudioStats = (overview: MyStudioOverview, remainingCash?: num
     },
     {
         label: "Net P&L",
-        value: "—",
-        subValue: "Awaiting box office",
+        value: formatCompact(overview.netProfitInDollars),
+        subValue: "Net profit in dollars",
         icon: Activity,
-        trend: "neutral",
+        trend: overview.netProfitInDollars > 0 ? "up" : overview.netProfitInDollars < 0 ? "down" : "neutral",
     },
 ];
 

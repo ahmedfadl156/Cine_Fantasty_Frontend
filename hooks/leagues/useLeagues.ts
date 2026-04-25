@@ -1,4 +1,4 @@
-import { createLeague, getPublicLeagues, getMyLeagues, joinLeague, joinPublicLeague, getLeagueDetails, getLeagueLeaderboard, getLeagueActivityFeed } from "@/services/leagues/leagues"
+import { createLeague, getPublicLeagues, getMyLeagues, joinLeague, joinPublicLeague, getLeagueDetails, getLeagueLeaderboard, getLeagueActivityFeed, leaveLeague, updateLeagueSettings, kickPlayerFromLeague } from "@/services/leagues/leagues"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
@@ -103,3 +103,60 @@ export const useJoinPublicLeague = () => {
         }
     })
 }
+
+export const useUpdateLeagueSettings = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({leagueId , settings} : {leagueId: string , settings: {isPublic?: boolean , name?: string}}) => updateLeagueSettings(leagueId , settings),
+        onSuccess: (_, {leagueId}) => {
+            queryClient.invalidateQueries({ queryKey: ["leagueDetails" , leagueId]});
+            toast.success("League Settings Updated Successfully" , {
+                description: "Your league settings have been updated successfully"
+            });
+        },
+        onError: (error : any) => {
+            toast.error("Failed to update league settings" , {
+                description: error.message
+            })
+        }
+    })
+}
+
+export const useLeaveLeague = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (leagueId: string) => leaveLeague(leagueId),
+        onSuccess: (_, leagueId) => {
+            queryClient.invalidateQueries({ queryKey: ["leagueDetails", leagueId] });
+            queryClient.invalidateQueries({ queryKey: ["publicLeagues"] });
+            queryClient.invalidateQueries({ queryKey: ["myLeagues"] });
+            toast.success("Left League!", {
+                description: "You have successfully left the league."
+            });
+        },
+        onError: (error: any) => {
+            toast.error("Failed to leave league", {
+                description: error.message
+            });
+        }
+    });
+};
+
+export const useKickPlayerFromLeague = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ leagueId, playerId }: { leagueId: string, playerId: string }) => kickPlayerFromLeague(leagueId, playerId),
+        onSuccess: (_, { leagueId }) => {
+            queryClient.invalidateQueries({ queryKey: ["leagueDetails", leagueId] });
+            queryClient.invalidateQueries({ queryKey: ["leagueLeaderboard", leagueId] });
+            toast.success("Player Kicked", {
+                description: "The player has been removed from the league."
+            });
+        },
+        onError: (error: any) => {
+            toast.error("Failed to kick player", {
+                description: error.message
+            });
+        }
+    });
+};

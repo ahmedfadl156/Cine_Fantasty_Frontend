@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useGetLeagueDetails, useGetLeagueLeaderboard } from "@/hooks/leagues/useLeagues";
@@ -11,10 +12,12 @@ import { LeagueAboutCard } from "@/components/league/details/LeagueAboutCard";
 import { LeagueActivityFeed } from "@/components/league/details/LeagueActivityFeed";
 import { LeagueRosterCard } from "@/components/league/details/LeagueRosterCard";
 import { SectionDivider } from "@/components/league/details/SectionDivider";
+import LeagueSettingsModal from "@/components/league/details/LeagueSettingsModal";
 
 const LeagueDetailPage = () => {
     const params = useParams();
     const leagueId = params.id as string;
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
     const {
         data: league,
@@ -52,7 +55,10 @@ const LeagueDetailPage = () => {
 
     return (
         <div className="bg-background min-h-screen">
-            <LeagueHeroBanner league={league} />
+            <LeagueHeroBanner
+                league={league}
+                onOpenSettings={() => setIsSettingsOpen(true)}
+            />
             <LeagueStatsBar league={league} leaderboardData={leaderboardData} />
 
             <section className="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20 pb-24">
@@ -81,6 +87,14 @@ const LeagueDetailPage = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Settings Modal */}
+            <LeagueSettingsModal
+                isOpen={isSettingsOpen}
+                onClose={() => setIsSettingsOpen(false)}
+                league={league}
+                leaderboardData={leaderboardData}
+            />
         </div>
     );
 };

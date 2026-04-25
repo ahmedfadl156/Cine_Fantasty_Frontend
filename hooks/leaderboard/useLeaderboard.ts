@@ -5,6 +5,6 @@ export const useLeaderboard = () => {
     return useQuery({
         queryKey: ["leaderboard"],
         queryFn: getLeaderboard,
-        staleTime: 1000 * 60 * 10, 
+        staleTime: 1000 * 60 * 30, 
     });
 };

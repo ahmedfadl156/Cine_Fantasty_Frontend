@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X, Hash, Lock } from "lucide-react";
 import { useJoinPublicLeague, useJoinLeague } from "@/hooks/leagues/useLeagues";
+import { useRouter } from "next/navigation";
 
 interface JoinLeagueModalProps {
     isOpen: boolean;
@@ -19,6 +20,7 @@ export const JoinLeagueModal = ({
     leagueId,
     requiresCode = false,
 }: JoinLeagueModalProps) => {
+    const router = useRouter();
     const [inviteCode, setInviteCode] = useState("");
     const {mutate: joinPublicLeague, isPending: isPublicPending } = useJoinPublicLeague();
     const {mutate: joinPrivateLeague, isPending: isPrivatePending } = useJoinLeague();
@@ -29,9 +31,15 @@ export const JoinLeagueModal = ({
 
     const handleJoin = () => {
         if (requiresCode && !leagueId) {
-            joinPrivateLeague({ inviteCode }, { onSuccess: () => onClose() });
+            joinPrivateLeague({ inviteCode }, { onSuccess: () => {
+                onClose();
+                setInviteCode("");
+            } });
         } else if (leagueId) {
-            joinPublicLeague(leagueId, { onSuccess: () => onClose() });
+            joinPublicLeague(leagueId, { onSuccess: () => {
+                onClose();
+                router.push(`/leagues/${leagueId}`)
+            } });
         }
     }
 

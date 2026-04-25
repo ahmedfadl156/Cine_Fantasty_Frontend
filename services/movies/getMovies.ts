@@ -70,6 +70,7 @@ export interface MyStudioFilm {
 }
 
 export interface MyStudioOverview {
+    netProfitInDollars: number;
     totalInvestedInDollars: number;
     totalFilmsOwned: number;
 }
