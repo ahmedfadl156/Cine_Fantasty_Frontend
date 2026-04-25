@@ -60,7 +60,7 @@ export const MovieEditModal = ({ isOpen, onClose, movie }: MovieEditModalProps) 
     const isPending = updateMutation.isPending;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed h-screen w-full inset-0 z-50 flex justify-center items-center p-4">
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { getAllMovies, updateMovieAdmin } from "@/services/admin/market/market"
+import { getAllMovies, updateMovieAdmin, applyStreamingRevenue } from "@/services/admin/market/market"
 
 interface AdminMoviesFilters {
     seasonId?: string;
@@ -31,6 +31,20 @@ export const useUpdateMovieAdmin = () => {
                 releaseDate?: string
             }
         }) => updateMovieAdmin(movieId, updates),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["admin-movies"] })
+        }
+    })
+}
+
+export const useApplyStreamingRevenue = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ movieId, info }: {
+            movieId: string,
+            info: { manualRating?: number, manualVotes?: number }
+        }) => applyStreamingRevenue(movieId, info),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["admin-movies"] })
         }

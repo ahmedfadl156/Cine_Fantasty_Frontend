@@ -43,4 +43,19 @@ export const updateMovieAdmin = async (movieId: string, updates: { status?: stri
 
 
 
-// export const applyStreamingRevenue = async (manualRating?: number) => {}
+export const applyStreamingRevenue = async (movieId: string , info: {manualRating?: number , manualVotes?: number}) => {
+    const response = await fetch(`${API_URL}/dashboard/apply-streaming-revenue/${movieId}` , {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(info)
+    });
+
+    if(!response.ok){
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add the revenue");
+    };
+
+    const updatedMovie = await response.json();
+    return updatedMovie;
+}

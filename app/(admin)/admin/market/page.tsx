@@ -5,6 +5,7 @@ import { Film } from "lucide-react";
 import { MarketFilterBar } from "@/components/admin/market/MarketFilterBar";
 import { MovieListTable } from "@/components/admin/market/MovieListTable";
 import { MovieEditModal } from "@/components/admin/market/MovieEditModal";
+import { StreamingRevenueModal } from "@/components/admin/market/StreamingRevenueModal";
 import { useGetAdminMovies } from "@/hooks/admin/market/use-market";
 
 const AdminMarketPage = () => {
@@ -17,6 +18,7 @@ const AdminMarketPage = () => {
     });
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isStreamingModalOpen, setIsStreamingModalOpen] = useState(false);
     const [selectedMovie, setSelectedMovie] = useState<any>(null);
 
     const { data: responseData, isLoading, isError } = useGetAdminMovies(filters);
@@ -24,6 +26,11 @@ const AdminMarketPage = () => {
     const handleEdit = (movie: any) => {
         setSelectedMovie(movie);
         setIsEditModalOpen(true);
+    };
+
+    const handleAddStreaming = (movie: any) => {
+        setSelectedMovie(movie);
+        setIsStreamingModalOpen(true);
     };
 
     const handlePageChange = (newPage: number) => {
@@ -34,7 +41,8 @@ const AdminMarketPage = () => {
     const pagination = responseData?.pagination || { currentPage: 1, totalPages: 1, totalMovies: 0 };
 
     return (
-        <div className="flex flex-col gap-6 animate-in fade-in duration-500 pb-10">
+        <>
+            <div className="flex flex-col gap-6 animate-in fade-in duration-500 pb-10">
             {/* Header */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/5 pb-5">
                 <div>
@@ -64,15 +72,23 @@ const AdminMarketPage = () => {
                     pagination={pagination}
                     onPageChange={handlePageChange}
                     onEdit={handleEdit}
+                    onAddStreaming={handleAddStreaming}
                 />
             )}
+            </div>
 
             <MovieEditModal
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
                 movie={selectedMovie}
             />
-        </div>
+
+            <StreamingRevenueModal
+                isOpen={isStreamingModalOpen}
+                onClose={() => setIsStreamingModalOpen(false)}
+                movie={selectedMovie}
+            />
+        </>
     );
 };
 

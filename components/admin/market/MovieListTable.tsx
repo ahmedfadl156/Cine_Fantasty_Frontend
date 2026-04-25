@@ -1,6 +1,6 @@
 "use client";
 
-import { Edit2, ChevronLeft, ChevronRight, TrendingUp, Clock, Archive } from "lucide-react";
+import { Edit2, ChevronLeft, ChevronRight, TrendingUp, Clock, Archive, PlayCircle } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -14,9 +14,10 @@ interface MovieListTableProps {
     };
     onPageChange: (newPage: number) => void;
     onEdit: (movie: any) => void;
+    onAddStreaming: (movie: any) => void;
 }
 
-export const MovieListTable = ({ movies, pagination, onPageChange, onEdit }: MovieListTableProps) => {
+export const MovieListTable = ({ movies, pagination, onPageChange, onEdit, onAddStreaming }: MovieListTableProps) => {
     const getStatusIcon = (status: string) => {
         switch (status) {
             case "IN_THEATERS": return <TrendingUp className="w-3.5 h-3.5 mr-1" />;
@@ -64,6 +65,9 @@ export const MovieListTable = ({ movies, pagination, onPageChange, onEdit }: Mov
                                             src={imageUrl}
                                             alt={movie.title}
                                             fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            quality={75}
+                                            loading="lazy"
                                             className="object-cover rounded-lg"
                                         />
                                         </div>
@@ -96,15 +100,27 @@ export const MovieListTable = ({ movies, pagination, onPageChange, onEdit }: Mov
                                         ${((movie.boxOfficeRevenue || 0) / 100).toLocaleString()}
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            className="text-gray-400 hover:text-white hover:bg-white/10"
-                                            onClick={() => onEdit(movie)}
-                                        >
-                                            <Edit2 className="w-4 h-4 mr-1.5" />
-                                            Edit
-                                        </Button>
+                                        <div className="flex items-center justify-end gap-2">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-primary hover:text-primary hover:bg-primary/10"
+                                                onClick={() => onAddStreaming(movie)}
+                                                title="Add Streaming Revenue"
+                                            >
+                                                <PlayCircle className="w-4 h-4 mr-1.5" />
+                                                Streaming
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-gray-400 hover:text-white hover:bg-white/10"
+                                                onClick={() => onEdit(movie)}
+                                            >
+                                                <Edit2 className="w-4 h-4 mr-1.5" />
+                                                Edit
+                                            </Button>
+                                        </div>
                                     </td>
                                 </tr>
                             )})}

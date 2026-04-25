@@ -9,7 +9,8 @@ import {
 } from "@/components/studio/StudioStats";
 import { StudioDashboard } from "@/components/studio/StudioDashboard";
 import { MyLeaguesWidget } from "@/components/studio/MyLeaguesWidget";
-import { Clapperboard, Settings, Trophy, AlertCircle } from "lucide-react";
+import { CardsGrid } from "@/components/studio/cards/CardsGrid";
+import { Clapperboard, Trophy, AlertCircle, CreditCard } from "lucide-react";
 import Link from "next/link";
 import { useGetMyLeagues } from "@/hooks/leagues/useLeagues";
 
@@ -199,6 +200,24 @@ const MyStudioPage = () => {
                         </div>
                     </div>
                 </div>
+            </section>
+
+            {/* ── Power Cards Section ── */}
+            <section className="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-20 pb-20">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="flex-1 h-px bg-on-secondary-container/20" />
+                    <span className="text-[10px] font-mono tracking-widest uppercase text-on-secondary-container flex items-center gap-1.5">
+                        <CreditCard className="w-3 h-3" />
+                        Power Cards
+                    </span>
+                    <div className="flex-1 h-px bg-on-secondary-container/20" />
+                </div>
+
+                <CardsGrid
+                    films={[
+                        ...(studioData?.dashboard?.inProduction ?? []),
+                    ]}
+                />
             </section>
         </div>
     );
