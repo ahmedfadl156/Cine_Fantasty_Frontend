@@ -45,6 +45,7 @@ export const MovieListTable = ({ movies, pagination, onPageChange, onEdit, onAdd
                             <tr>
                                 <th scope="col" className="px-6 py-4 font-medium">Poster</th>
                                 <th scope="col" className="px-6 py-4 font-medium">Movie Title</th>
+                                <th scope="col" className="px-6 py-4 font-medium">Buyers Count</th>
                                 <th scope="col" className="px-6 py-4 font-medium">Status</th>
                                 <th scope="col" className="px-6 py-4 font-medium">Release Date</th>
                                 <th scope="col" className="px-6 py-4 font-medium">Base Price</th>
@@ -82,6 +83,13 @@ export const MovieListTable = ({ movies, pagination, onPageChange, onEdit, onAdd
                                                     Season: {movie.seasonId.name}
                                                 </span>
                                             )}
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex flex-col">
+                                            <span className="text-xs text-gray-500 mt-0.5">
+                                                Buyers: {movie.buyersCount}
+                                            </span>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">

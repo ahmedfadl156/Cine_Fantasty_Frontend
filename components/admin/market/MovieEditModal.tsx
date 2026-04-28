@@ -29,8 +29,8 @@ export const MovieEditModal = ({ isOpen, onClose, movie }: MovieEditModalProps) 
             setFormData({
                 status: movie.status || "",
                 releaseDate: movie.releaseDate ? new Date(movie.releaseDate).toISOString().split('T')[0] : "",
-                basePriceInDollars: movie.basePrice ? movie.basePrice : 0,
-                boxOfficePriceInDollars: movie.boxOfficeRevenue ? movie.boxOfficeRevenue : 0
+                basePriceInDollars: movie.basePrice ? movie.basePrice / 100 : 0,
+                boxOfficePriceInDollars: movie.boxOfficeRevenue ? movie.boxOfficeRevenue / 100 : 0
             });
         }
     }, [movie, isOpen]);
