@@ -11,9 +11,13 @@ import {
     Clock,
     Calendar,
     DollarSign,
+    Tag,
+    XCircle,
 } from "lucide-react";
 import type { MyStudioDashboard, MyStudioFilm } from "@/services/movies/getMovies";
 import { ShareGamePopup } from "./ShareGamePopup";
+import { ListForSaleModal } from "@/components/transferMarket/ListForSaleModal";
+import { CancelListingModal } from "@/components/transferMarket/CancelListingModal";
 
 
 const formatCurrency = (value: number) =>
@@ -32,9 +36,7 @@ const formatDate = (iso: string) =>
     });
 
 const getPosterUrl = (path: string) =>
-    path?.startsWith("http")
-        ? path
-        : `https://image.tmdb.org/t/p/w200${path}`;
+    path?.startsWith("http") ? path : `https://image.tmdb.org/t/p/w200${path}`;
 
 
 type TabId = "inProduction" | "inTheaters" | "archivedFilms";
@@ -46,9 +48,9 @@ interface Tab {
 }
 
 const TABS: Tab[] = [
-    { id: "inProduction", label: "In Production", icon: Clapperboard },
-    { id: "inTheaters",   label: "In Theaters",   icon: Tv2 },
-    { id: "archivedFilms", label: "Archived",     icon: Archive },
+    { id: "inProduction",  label: "In Production", icon: Clapperboard },
+    { id: "inTheaters",    label: "In Theaters",   icon: Tv2 },
+    { id: "archivedFilms", label: "Archived",       icon: Archive },
 ];
 
 
@@ -90,12 +92,21 @@ const EmptyTab = ({ label }: { label: string }) => (
 );
 
 
-const FilmRow = ({ film, index }: { film: MyStudioFilm; index: number }) => {
+interface FilmRowProps {
+    film: MyStudioFilm;
+    index: number;
+    canList?: boolean;
+}
+
+const FilmRow = ({ film, index, canList = false }: FilmRowProps) => {
+    const [listModalOpen, setListModalOpen] = useState(false);
+    const [cancelModalOpen, setCancelModalOpen] = useState(false);
+
     const { movieDetails, purchasePriceInDollars, daysUntilRelease } = film;
     const posterUrl = getPosterUrl(movieDetails?.posterPath);
 
-    const formattedDate = movieDetails?.releaseDate 
-        ? formatDate(movieDetails.releaseDate) 
+    const formattedDate = movieDetails?.releaseDate
+        ? formatDate(movieDetails.releaseDate)
         : "Released";
 
     const daysLabel =
@@ -111,72 +122,143 @@ const FilmRow = ({ film, index }: { film: MyStudioFilm; index: number }) => {
 
     const countdownColor =
         daysUntilRelease === undefined || daysUntilRelease === null || daysUntilRelease <= 0
-            ? "text-[#4E9268]" 
+            ? "text-[#4E9268]"
             : daysUntilRelease <= 7
-            ? "text-[#A85A3A]" 
+            ? "text-[#A85A3A]"
             : daysUntilRelease <= 30
-            ? "text-[#D4AF37]" 
+            ? "text-[#D4AF37]"
             : "text-on-secondary-container";
 
+    // Base price for the ListForSaleModal — use basePrice from movieDetails if populated by
+    // the backend, otherwise fall back to purchasePrice * 100 as an estimate.
+    const basePriceCents =
+        film.movieDetails?.basePrice ?? film.basePriceCents ?? Math.round(purchasePriceInDollars * 100);
+
     return (
-        <div className="flex gap-4 p-4 bg-surface-container-low hover:bg-surface-container-high cinematic-transition group">
-            {/* Index */}
-            <span className="font-mono text-[10px] text-on-secondary-container/40 w-5 flex-shrink-0 pt-[22px] text-right">
-                {String(index + 1).padStart(2, "0")}
-            </span>
-
-            {/* Poster */}
-            <div className="relative w-12 h-[72px] flex-shrink-0 overflow-hidden">
-                <Image
-                    src={posterUrl}
-                    alt={movieDetails?.title || "Movie poster"}
-                    fill
-                    className="object-cover group-hover:scale-105 cinematic-transition"
-                    sizes="48px"
-                />
-            </div>
-
-            {/* Info */}
-            <div className="flex-1 min-w-0 flex flex-col justify-center gap-1.5">
-                <p className="font-ui font-medium text-on-surface text-sm leading-tight line-clamp-1 group-hover:text-primary cinematic-transition">
-                    {movieDetails?.title || "Unknown Title"}
-                </p>
-
-                <div className="flex items-center gap-1.5">
-                    <Calendar className="w-3 h-3 text-on-secondary-container/50 flex-shrink-0" />
-                    <span className="font-mono text-[10px] text-on-secondary-container uppercase tracking-wider">
-                        {formattedDate}
-                    </span>
-                </div>
-
-                {/* Status badge */}
-                <span className="inline-flex w-fit items-center gap-1.5 bg-surface-container-high px-2 py-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#4E9268] animate-pulse" />
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-on-secondary-container">
-                        {film.status}
-                    </span>
+        <>
+            <div className="flex gap-4 p-4 bg-surface-container-low hover:bg-surface-container-high cinematic-transition group">
+                {/* Index */}
+                <span className="font-mono text-[10px] text-on-secondary-container/40 w-5 flex-shrink-0 pt-[22px] text-right">
+                    {String(index + 1).padStart(2, "0")}
                 </span>
+
+                {/* Poster */}
+                <div className="relative w-12 h-[72px] flex-shrink-0 overflow-hidden">
+                    <Image
+                        src={posterUrl}
+                        alt={movieDetails?.title || "Movie poster"}
+                        fill
+                        className="object-cover group-hover:scale-105 cinematic-transition"
+                        sizes="48px"
+                    />
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0 flex flex-col justify-center gap-1.5">
+                    <p className="font-ui font-medium text-on-surface text-sm leading-tight line-clamp-1 group-hover:text-primary cinematic-transition">
+                        {movieDetails?.title || "Unknown Title"}
+                    </p>
+
+                    <div className="flex items-center gap-1.5">
+                        <Calendar className="w-3 h-3 text-on-secondary-container/50 flex-shrink-0" />
+                        <span className="font-mono text-[10px] text-on-secondary-container uppercase tracking-wider">
+                            {formattedDate}
+                        </span>
+                    </div>
+
+                    {/* Status / for-sale badge */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <span className="inline-flex w-fit items-center gap-1.5 bg-surface-container-high px-2 py-0.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#4E9268] animate-pulse" />
+                            <span className="font-mono text-[9px] uppercase tracking-widest text-on-secondary-container">
+                                {film.status}
+                            </span>
+                        </span>
+
+                        {film.isForSale && (
+                            <span className="inline-flex w-fit items-center gap-1 bg-primary/15 border border-primary/25 px-2 py-0.5">
+                                <Tag className="w-2.5 h-2.5 text-primary" />
+                                <span className="font-mono text-[9px] uppercase tracking-widest text-primary">
+                                    Listed
+                                </span>
+                            </span>
+                        )}
+                    </div>
+                </div>
+
+                {/* Financials + Transfer Market CTAs */}
+                <div className="flex flex-col items-end justify-center gap-1.5 flex-shrink-0">
+                    <div className="flex items-center gap-1">
+                        <DollarSign className="w-3 h-3 text-on-secondary-container/50" />
+                        <span className="font-mono text-sm text-on-surface">
+                            {formatCurrency(purchasePriceInDollars)}
+                        </span>
+                    </div>
+                    <div className={`flex items-center gap-1 ${countdownColor}`}>
+                        <Clock className="w-3 h-3" />
+                        <span className="font-mono text-[10px] uppercase tracking-wider">
+                            {daysLabel}
+                        </span>
+                    </div>
+
+                    {/* Transfer market CTA — only on eligible tabs */}
+                    {canList && (
+                        <div className="mt-1">
+                            {film.isForSale ? (
+                                <button
+                                    id={`studio-cancel-listing-${film._id}`}
+                                    onClick={() => setCancelModalOpen(true)}
+                                    className="flex items-center gap-1 px-2.5 py-1 text-[9px] font-mono uppercase tracking-wider text-[#A85A3A] border border-[#A85A3A]/30 bg-[#A85A3A]/10 hover:bg-[#A85A3A]/20 cinematic-transition focus:outline-none focus:ring-1 focus:ring-[#A85A3A] cursor-pointer"
+                                    aria-label={`Cancel listing for ${movieDetails?.title}`}
+                                >
+                                    <XCircle className="w-2.5 h-2.5" />
+                                    Cancel Listing
+                                </button>
+                            ) : (
+                                <button
+                                    id={`studio-list-for-sale-${film._id}`}
+                                    onClick={() => setListModalOpen(true)}
+                                    className="flex items-center gap-1 px-2.5 py-1 text-[9px] font-mono uppercase tracking-wider text-on-secondary-container border border-on-secondary-container/20 hover:border-primary hover:text-primary cinematic-transition focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                                    aria-label={`List ${movieDetails?.title} for sale`}
+                                >
+                                    <Tag className="w-2.5 h-2.5" />
+                                    List for Sale
+                                </button>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
 
-            {/* Financials */}
-            <div className="flex flex-col items-end justify-center gap-1.5 flex-shrink-0">
-                <div className="flex items-center gap-1">
-                    <DollarSign className="w-3 h-3 text-on-secondary-container/50" />
-                    <span className="font-mono text-sm text-on-surface">
-                        {formatCurrency(purchasePriceInDollars)}
-                    </span>
-                </div>
-                <div className={`flex items-center gap-1 ${countdownColor}`}>
-                    <Clock className="w-3 h-3" />
-                    <span className="font-mono text-[10px] uppercase tracking-wider">
-                        {daysLabel}
-                    </span>
-                </div>
-            </div>
-        </div>
+            {/* Modals — rendered outside the row so z-index works correctly */}
+            {canList && !film.isForSale && (
+                <ListForSaleModal
+                    isOpen={listModalOpen}
+                    onClose={() => setListModalOpen(false)}
+                    asset={{
+                        _id: film._id,
+                        movieId: {
+                            _id: movieDetails?._id ?? "",
+                            title: movieDetails?.title ?? "",
+                            posterPath: movieDetails?.posterPath ?? "",
+                            basePrice: basePriceCents,
+                        },
+                    }}
+                />
+            )}
+
+            {canList && film.isForSale && (
+                <CancelListingModal
+                    isOpen={cancelModalOpen}
+                    onClose={() => setCancelModalOpen(false)}
+                    assetId={film._id}
+                    movieTitle={movieDetails?.title ?? "Movie"}
+                    salePriceCents={film.salePrice ?? 0}
+                />
+            )}
+        </>
     );
 };
-
 
 
 interface StudioDashboardProps {
@@ -195,9 +277,12 @@ export const StudioDashboard = ({ dashboard, isLoading }: StudioDashboardProps) 
 
     const films: MyStudioFilm[] = isLoading ? [] : (dashboard?.[activeTab] ?? []);
 
+    // Only allow listing on in-production and in-theaters assets
+    const canList = activeTab !== "archivedFilms";
+
     return (
         <div className="flex flex-col">
-            {/*  Tab Bar  */}
+            {/* Tab Bar */}
             <div className="flex overflow-x-auto overflow-y-hidden border-b border-on-secondary-container/15 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {TABS.map((tab) => {
                     const Icon = tab.icon;
@@ -206,7 +291,10 @@ export const StudioDashboard = ({ dashboard, isLoading }: StudioDashboardProps) 
                     return (
                         <button
                             key={tab.id}
+                            id={`studio-tab-${tab.id}`}
                             onClick={() => setActiveTab(tab.id)}
+                            aria-selected={isActive}
+                            role="tab"
                             className={`relative flex items-center justify-center flex-shrink-0 whitespace-nowrap gap-2 px-5 py-3.5 text-[10px] font-mono uppercase tracking-widest cinematic-transition group focus:outline-none ${
                                 isActive
                                     ? "text-on-surface"
@@ -240,7 +328,7 @@ export const StudioDashboard = ({ dashboard, isLoading }: StudioDashboardProps) 
                 })}
             </div>
 
-            {/* ── Tab Content ── */}
+            {/* Tab Content */}
             <div className="flex flex-col gap-px bg-on-secondary-container/10">
                 {isLoading ? (
                     Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
@@ -248,11 +336,16 @@ export const StudioDashboard = ({ dashboard, isLoading }: StudioDashboardProps) 
                     <EmptyTab label={TABS.find((t) => t.id === activeTab)?.label ?? ""} />
                 ) : (
                     films.map((film, i) => (
-                        <FilmRow key={film._id} film={film} index={i} />
+                        <FilmRow
+                            key={film._id}
+                            film={film}
+                            index={i}
+                            canList={canList}
+                        />
                     ))
                 )}
             </div>
-            
+
             <ShareGamePopup />
         </div>
     );

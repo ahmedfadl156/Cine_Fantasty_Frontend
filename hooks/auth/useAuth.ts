@@ -1,5 +1,5 @@
 "use client";
-import { login, logout, signup } from "@/services/auth/auth"
+import { login, logout, signup, googleLogin, facebookLogin } from "@/services/auth/auth"
 import { getMe } from "@/services/auth/getMe"
 import { updateMe, updateMyPassword } from "@/services/auth/userService"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -60,6 +60,52 @@ export const useSignup = () => {
         }
     })
 }
+
+export const useGoogleLogin = () => {
+    const queryClient = useQueryClient();
+    const router = useRouter();
+
+    return useMutation({
+        mutationFn: (idToken: string) => googleLogin(idToken),
+        onSuccess: (user) => {
+            queryClient.setQueryData(['authUser'], user);
+            queryClient.invalidateQueries({ queryKey: ["authUser"] });
+            queryClient.invalidateQueries({ queryKey: ["myStudio"] });
+            toast.success("Welcome!", {
+                description: "Signed in with Google successfully.",
+            });
+            router.push("/");
+        },
+        onError: (error) => {
+            toast.error("Google Login Failed", {
+                description: error.message,
+            });
+        },
+    });
+};
+
+export const useFacebookLogin = () => {
+    const queryClient = useQueryClient();
+    const router = useRouter();
+
+    return useMutation({
+        mutationFn: (accessToken: string) => facebookLogin(accessToken),
+        onSuccess: (user) => {
+            queryClient.setQueryData(['authUser'], user);
+            queryClient.invalidateQueries({ queryKey: ["authUser"] });
+            queryClient.invalidateQueries({ queryKey: ["myStudio"] });
+            toast.success("Welcome!", {
+                description: "Signed in with Facebook successfully.",
+            });
+            router.push("/");
+        },
+        onError: (error) => {
+            toast.error("Facebook Login Failed", {
+                description: error.message,
+            });
+        },
+    });
+};
 
 export const useLogout = () => {
     const queryClient = useQueryClient();

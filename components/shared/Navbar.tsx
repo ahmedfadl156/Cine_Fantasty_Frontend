@@ -43,6 +43,9 @@ const Navbar = () => {
                 <Link href="/market" className="text-sm font-medium tracking-wide text-on-surface hover:text-primary transition-colors">
                     Market
                 </Link>
+                <Link href="/transfer-market" className="text-sm font-medium tracking-wide text-on-surface hover:text-primary transition-colors">
+                    Transfers
+                </Link>
                 <Link href="/my-studio" className="text-sm font-medium tracking-wide text-on-surface hover:text-primary transition-colors">
                     My Studio
                 </Link>
@@ -122,6 +125,9 @@ const Navbar = () => {
                 <div className="absolute top-full left-0 w-full bg-background/95 backdrop-blur-3xl border-b border-[#9C8E7E]/20 flex flex-col items-center justify-start py-8 gap-8 md:hidden shadow-2xl origin-top animate-in fade-in slide-in-from-top-4 duration-300 h-screen-header">
                     <Link onClick={() => setIsMobileMenuOpen(false)} href="/market" className="text-lg font-medium text-on-surface hover:text-primary transition-colors">
                         Market
+                    </Link>
+                    <Link onClick={() => setIsMobileMenuOpen(false)} href="/transfer-market" className="text-lg font-medium text-on-surface hover:text-primary transition-colors">
+                        Transfers
                     </Link>
                     <Link onClick={() => setIsMobileMenuOpen(false)} href="/my-studio" className="text-lg font-medium text-on-surface hover:text-primary transition-colors">
                         My Studio

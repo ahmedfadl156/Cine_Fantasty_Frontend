@@ -53,3 +53,35 @@ export const logout = async () => {
 
     return response.json();
 }
+
+export const googleLogin = async (idToken: string) => {
+    const response = await fetch(`${API_URL}/auth/google`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Google login failed");
+    }
+
+    return response.json();
+};
+
+export const facebookLogin = async (accessToken: string) => {
+    const response = await fetch(`${API_URL}/auth/facebook`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accessToken }),
+        credentials: "include",
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Facebook login failed");
+    }
+
+    return response.json(); 
+};

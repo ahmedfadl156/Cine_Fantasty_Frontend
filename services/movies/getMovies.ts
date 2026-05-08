@@ -59,14 +59,22 @@ export interface MyStudioMovieDetails {
     posterPath: string;
     releaseDate: string;
     title: string;
+    basePrice?: number;
 }
 
 export interface MyStudioFilm {
+    marketStats: any;
     _id: string;
     status: string;
     movieDetails: MyStudioMovieDetails;
     purchasePriceInDollars: number;
     daysUntilRelease: number;
+    /** Whether this asset is currently listed in the transfer market */
+    isForSale: boolean;
+    /** Sale price in cents when isForSale is true */
+    salePrice: number;
+    /** Base system price in cents (from movieId.basePrice) */
+    basePriceCents?: number;
 }
 
 export interface MyStudioOverview {
