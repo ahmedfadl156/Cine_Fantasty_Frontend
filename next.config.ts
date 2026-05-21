@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       beforeFiles: [
         {
           source: "/api/v1/:path*",
-          destination: `https://cinefantastybackend-production-eb3a.up.railway.app/api/v1/:path*`
+          destination: `https://cinefantastybackend-production-012c.up.railway.app/api/v1/:path*`
         }
       ]
     };
